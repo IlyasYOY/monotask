@@ -1,4 +1,4 @@
-package filestest
+package filestest_test
 
 import (
 	"os"
@@ -6,10 +6,11 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/ilyasyoy/monotask/pkg/filestest"
 )
 
 func TestRenderDir_BasicFile(t *testing.T) {
-	dir := RenderDir(t, `#file.txt
+	dir := filestest.RenderDir(t, `-#file:file.txt
 line1
 line2`)
 
@@ -26,9 +27,9 @@ line2`)
 }
 
 func TestRenderDir_MultipleFiles(t *testing.T) {
-	dir := RenderDir(t, `#file1.txt
+	dir := filestest.RenderDir(t, `-#file:file1.txt
 content1
-#file2.txt
+-#file:file2.txt
 content2`)
 
 	file1Path := filepath.Join(dir, "file1.txt")
@@ -51,7 +52,7 @@ content2`)
 }
 
 func TestRenderDir_NestedDirectories(t *testing.T) {
-	dir := RenderDir(t, `#dir/subdir/file.txt
+	dir := filestest.RenderDir(t, `-#file:dir/subdir/file.txt
 nested content`)
 
 	filePath := filepath.Join(dir, "dir", "subdir", "file.txt")
@@ -67,7 +68,7 @@ nested content`)
 }
 
 func TestRenderDir_EmptyContent(t *testing.T) {
-	dir := RenderDir(t, `#empty.txt
+	dir := filestest.RenderDir(t, `-#file:empty.txt
 `)
 
 	filePath := filepath.Join(dir, "empty.txt")
@@ -82,7 +83,7 @@ func TestRenderDir_EmptyContent(t *testing.T) {
 }
 
 func TestRenderDir_BlankLines(t *testing.T) {
-	dir := RenderDir(t, `#file.txt
+	dir := filestest.RenderDir(t, `-#file:file.txt
 
 line
 
@@ -101,7 +102,7 @@ line
 }
 
 func TestRenderDir_NoMarkers(t *testing.T) {
-	dir := RenderDir(t, `plain text
+	dir := filestest.RenderDir(t, `plain text
 no markers`)
 
 	err := filepath.WalkDir(dir, func(path string, d os.DirEntry, err error) error {

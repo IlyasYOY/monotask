@@ -35,19 +35,3 @@ tasks.md:14:12: CHECKBOX: this is not closed check-box.
 
 - `.c`, `.h` - C files (TODO, BUG, NOTE markers in comments)
 - `.md` - Markdown files (unchecked checkboxes)
-
-## Implementation
-
-The core is the `Extractor` interface:
-
-```go
-type Extractor interface {
-    Extract(ctx context.Context) ([]Task, error)
-}
-```
-
-Extractors:
-- `fileExtractor` - delegates to appropriate extractor based on file type
-- `directoryExtractor` - recursively walks directories
-- `markdownExtractor` - extracts checkboxes from markdown
-- `cCommentsExtractor` - extracts markers from C comments

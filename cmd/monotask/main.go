@@ -31,5 +31,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	output.PrintGNUFormat(tasks)
+	output.PrintGNUFormatTo(tasks, os.Stdout)
 }
