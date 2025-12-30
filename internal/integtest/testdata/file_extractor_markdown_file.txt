@@ -1,0 +1,4 @@
+test.md:1:1: CHECKBOX: md
+
+-#file:test.md
+- [ ] md

@@ -1,0 +1,4 @@
+test.h:1:1: BUG: h
+
+-#file:test.h
+// BUG: h

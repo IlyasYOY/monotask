@@ -1,0 +1,7 @@
+test.c:2:1: NOTE: important note
+
+-#file:test.c
+/*
+NOTE: important note
+*/
+int main() { return 0; }
