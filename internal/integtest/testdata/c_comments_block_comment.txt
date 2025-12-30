@@ -1,5 +1,5 @@
 test.c:1:1: BUG: crash here */
 
--#file:test.c
+--file:test.c
 /* BUG: crash here */
 int main() { return 0; }

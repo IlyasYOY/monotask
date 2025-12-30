@@ -12,7 +12,7 @@ import (
 )
 
 // TestIntegration test walks the `testdata` directory for `*.txt` files.
-// Each file describes a temporary directory layout (using the `-#file:` marker)
+// Each file describes a temporary directory layout (using the `--file:` marker)
 // and the expected monotask output in its header.
 //
 // For every test file the test:

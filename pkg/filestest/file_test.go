@@ -11,7 +11,7 @@ import (
 
 func TestRenderDir_Header(t *testing.T) {
 	_, header := filestest.RenderDir(t, `This is header.
--#file:file.txt
+--file:file.txt
 line1
 line2`)
 
@@ -21,7 +21,7 @@ line2`)
 }
 
 func TestRenderDir_BasicFile(t *testing.T) {
-	dir, _ := filestest.RenderDir(t, `-#file:file.txt
+	dir, _ := filestest.RenderDir(t, `--file:file.txt
 line1
 line2`)
 
@@ -38,9 +38,9 @@ line2`)
 }
 
 func TestRenderDir_MultipleFiles(t *testing.T) {
-	dir, _ := filestest.RenderDir(t, `-#file:file1.txt
+	dir, _ := filestest.RenderDir(t, `--file:file1.txt
 content1
--#file:file2.txt
+--file:file2.txt
 content2`)
 
 	file1Path := filepath.Join(dir, "file1.txt")
@@ -63,7 +63,7 @@ content2`)
 }
 
 func TestRenderDir_NestedDirectories(t *testing.T) {
-	dir, _ := filestest.RenderDir(t, `-#file:dir/subdir/file.txt
+	dir, _ := filestest.RenderDir(t, `--file:dir/subdir/file.txt
 nested content`)
 
 	filePath := filepath.Join(dir, "dir", "subdir", "file.txt")
@@ -79,7 +79,7 @@ nested content`)
 }
 
 func TestRenderDir_EmptyContent(t *testing.T) {
-	dir, _ := filestest.RenderDir(t, `-#file:empty.txt
+	dir, _ := filestest.RenderDir(t, `--file:empty.txt
 `)
 
 	filePath := filepath.Join(dir, "empty.txt")
@@ -94,7 +94,7 @@ func TestRenderDir_EmptyContent(t *testing.T) {
 }
 
 func TestRenderDir_BlankLines(t *testing.T) {
-	dir, _ := filestest.RenderDir(t, `-#file:file.txt
+	dir, _ := filestest.RenderDir(t, `--file:file.txt
 
 line
 

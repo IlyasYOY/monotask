@@ -7,11 +7,11 @@ import (
 	"testing"
 )
 
-const separatorPrefix = "-#file:"
+const separatorPrefix = "--file:"
 
 // RenderDir creates a temporary directory structure based on the provided description.
 // The description is a multi-line string where file contents are defined using
-// the format: "-#file:<filename>" followed by the file's content lines.
+// the format: "--file:<filename>" followed by the file's content lines.
 // Files can be nested in subdirectories by including slashes in the filename.
 // It returns the path to the created temporary directory and the first comment block.
 // This is primarily used for testing purposes to set up file structures.
@@ -19,10 +19,10 @@ const separatorPrefix = "-#file:"
 // Example:
 //
 //	description := `This is it
-//	-#file:hello.txt
+//	--file:hello.txt
 //	Hello, World!
 //
-//	-#file:subdir/goodbye.txt
+//	--file:subdir/goodbye.txt
 //	Goodbye!`
 //	tmpDir, data := RenderDir(t, description)
 //

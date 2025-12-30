@@ -1,8 +1,8 @@
 README.md:1:1: CHECKBOX: Write tests
 src/main.c:1:1: TODO: Add validation
 
--#file:README.md
+--file:README.md
 - [ ] Write tests
 
--#file:src/main.c
+--file:src/main.c
 // TODO: Add validation

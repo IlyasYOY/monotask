@@ -1,9 +1,9 @@
 test.c:1:1: TODO: c task
 test.md:1:1: CHECKBOX: md task
 
--#file:test.c
+--file:test.c
 // TODO: c task
--#file:test.md
+--file:test.md
 - [ ] md task
--#file:test.txt
+--file:test.txt
 some text

@@ -1,4 +1,4 @@
 test.md:1:1: CHECKBOX: Complete documentation
 
--#file:test.md
+--file:test.md
 - [ ] Complete documentation

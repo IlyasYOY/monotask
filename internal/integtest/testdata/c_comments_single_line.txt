@@ -1,5 +1,5 @@
 test.c:1:1: TODO: fix the bug
 
--#file:test.c
+--file:test.c
 // TODO: fix the bug
 int main() { return 0; }

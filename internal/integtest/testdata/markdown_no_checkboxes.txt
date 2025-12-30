@@ -1,5 +1,5 @@
 
 
--#file:test.md
+--file:test.md
 - item
 - [x] done

@@ -1,8 +1,8 @@
 docs/guide.md:1:1: CHECKBOX: Update examples
 src/utils.c:1:1: NOTE: Optimize this function
 
--#file:docs/guide.md
+--file:docs/guide.md
 - [ ] Update examples
 
--#file:src/utils.c
+--file:src/utils.c
 // NOTE: Optimize this function

@@ -1,4 +1,4 @@
 subdir/test.c:1:1: BUG: nested
 
--#file:subdir/test.c
+--file:subdir/test.c
 // BUG: nested

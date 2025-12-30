@@ -1,6 +1,6 @@
 
 
--#file:test.c
+--file:test.c
 // this is a comment
 /* another comment */
 int main() { return 0; }

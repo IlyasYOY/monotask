@@ -1,6 +1,6 @@
 test.c:2:1: NOTE: important note
 
--#file:test.c
+--file:test.c
 /*
 NOTE: important note
 */
