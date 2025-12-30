@@ -23,12 +23,6 @@ func (e *directoryExtractor) Extract(ctx context.Context) ([]Task, error) {
 			return err
 		}
 
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-		}
-
 		if info.IsDir() {
 			return nil
 		}

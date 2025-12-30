@@ -11,7 +11,7 @@ import (
 )
 
 func TestCCommentsExtractor_SingleLine(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.c
 // TODO: fix the bug
 int main() { return 0; }
@@ -37,7 +37,7 @@ int main() { return 0; }
 }
 
 func TestCCommentsExtractor_BlockComment(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.c
 /* BUG: crash here */
 int main() { return 0; }
@@ -63,7 +63,7 @@ int main() { return 0; }
 }
 
 func TestCCommentsExtractor_MultiLineBlock(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.c
 /*
 NOTE: important note
@@ -91,7 +91,7 @@ int main() { return 0; }
 }
 
 func TestCCommentsExtractor_EmptyFile(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.c
 `)
 	extractor := extractor.NewCCommentsExtractor(filepath.Join(dir, "test.c"))
@@ -107,7 +107,7 @@ func TestCCommentsExtractor_EmptyFile(t *testing.T) {
 }
 
 func TestCCommentsExtractor_NoMarkers(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.c
 // this is a comment
 /* another comment */

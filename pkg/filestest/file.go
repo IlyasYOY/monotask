@@ -13,20 +13,22 @@ const separatorPrefix = "-#file:"
 // The description is a multi-line string where file contents are defined using
 // the format: "-#file:<filename>" followed by the file's content lines.
 // Files can be nested in subdirectories by including slashes in the filename.
-// It returns the path to the created temporary directory.
+// It returns the path to the created temporary directory and the first comment block.
 // This is primarily used for testing purposes to set up file structures.
 //
 // Example:
 //
-//	description := `-#file:hello.txt
+//	description := `This is it
+//	-#file:hello.txt
 //	Hello, World!
 //
 //	-#file:subdir/goodbye.txt
 //	Goodbye!`
-//	tmpDir := RenderDir(t, description)
+//	tmpDir, data := RenderDir(t, description)
 //
 // Creates hello.txt with "Hello, World!\n" and subdir/goodbye.txt with "Goodbye!\n"
-func RenderDir(t *testing.T, description string) string {
+// and header with "This is it".
+func RenderDir(t *testing.T, description string) (path string, header string) {
 	t.Helper()
 
 	tmpDir := t.TempDir()
@@ -35,11 +37,17 @@ func RenderDir(t *testing.T, description string) string {
 		lines = append(lines, strings.TrimSpace(line))
 	}
 
+	var prefixFound bool
+	var headerBuilder strings.Builder
 	for i := range len(lines) {
 		line := lines[i]
 		if !strings.HasPrefix(line, separatorPrefix) {
+			if !prefixFound {
+				headerBuilder.WriteString(line + "\n")
+			}
 			continue
 		}
+		prefixFound = true
 
 		fileName := strings.TrimSpace(line[len(separatorPrefix):])
 		var content strings.Builder
@@ -53,10 +61,10 @@ func RenderDir(t *testing.T, description string) string {
 			}
 		}
 
-		filePath := filepath.Join(tmpDir, fileName)
-		os.MkdirAll(filepath.Dir(filePath), 0o755)
-		os.WriteFile(filePath, []byte(content.String()), 0o644)
+		path = filepath.Join(tmpDir, fileName)
+		os.MkdirAll(filepath.Dir(path), 0o755)
+		os.WriteFile(path, []byte(content.String()), 0o644)
 	}
 
-	return tmpDir
+	return tmpDir, headerBuilder.String()
 }

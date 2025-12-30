@@ -11,7 +11,7 @@ import (
 )
 
 func TestMarkdownExtractor_SingleCheckbox(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.md
 - [ ] incomplete task
 `)
@@ -35,7 +35,7 @@ func TestMarkdownExtractor_SingleCheckbox(t *testing.T) {
 }
 
 func TestMarkdownExtractor_MultipleCheckboxes(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.md
 - [ ] task 1
 - [x] task 2
@@ -68,7 +68,7 @@ func TestMarkdownExtractor_MultipleCheckboxes(t *testing.T) {
 }
 
 func TestMarkdownExtractor_NoCheckboxes(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.md
 - item
 - [x] done
@@ -85,7 +85,7 @@ func TestMarkdownExtractor_NoCheckboxes(t *testing.T) {
 }
 
 func TestMarkdownExtractor_EmptyFile(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.md
 `)
 	extr := extractor.NewMarkdownExtractor(filepath.Join(dir, "test.md"))

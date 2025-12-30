@@ -34,12 +34,6 @@ func (e *cCommentsExtractor) Extract(ctx context.Context) ([]Task, error) {
 	blockCommentPattern := regexp.MustCompile(`/\*\s*(TODO|BUG|NOTE):\s*(.+)`)
 
 	for scanner.Scan() {
-		select {
-		case <-ctx.Done():
-			return nil, ctx.Err()
-		default:
-		}
-
 		lineNum++
 		line := scanner.Text()
 

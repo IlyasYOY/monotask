@@ -11,7 +11,7 @@ import (
 )
 
 func TestDirectoryExtractor_SingleFile(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.c
 // TODO: test
 `)
@@ -35,7 +35,7 @@ func TestDirectoryExtractor_SingleFile(t *testing.T) {
 }
 
 func TestDirectoryExtractor_MultipleFiles(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.c
 // TODO: c task
 -#file:test.md
@@ -70,7 +70,7 @@ some text
 }
 
 func TestDirectoryExtractor_NestedDirectories(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:subdir/test.c
 // BUG: nested
 `)
@@ -94,7 +94,7 @@ func TestDirectoryExtractor_NestedDirectories(t *testing.T) {
 }
 
 func TestDirectoryExtractor_EmptyDirectory(t *testing.T) {
-	dir := filestest.RenderDir(t, ``)
+	dir, _ := filestest.RenderDir(t, ``)
 	extr := extractor.NewDirectoryExtractor(dir)
 	tasks, err := extr.Extract(context.Background())
 	if err != nil {

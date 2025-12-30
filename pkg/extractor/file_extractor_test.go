@@ -11,7 +11,7 @@ import (
 )
 
 func TestFileExtractor_CFile(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.c
 // TODO: c
 `)
@@ -35,7 +35,7 @@ func TestFileExtractor_CFile(t *testing.T) {
 }
 
 func TestFileExtractor_HFile(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.h
 // BUG: h
 `)
@@ -59,7 +59,7 @@ func TestFileExtractor_HFile(t *testing.T) {
 }
 
 func TestFileExtractor_MarkdownFile(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.md
 - [ ] md
 `)
@@ -83,7 +83,7 @@ func TestFileExtractor_MarkdownFile(t *testing.T) {
 }
 
 func TestFileExtractor_UnsupportedFile(t *testing.T) {
-	dir := filestest.RenderDir(t, `
+	dir, _ := filestest.RenderDir(t, `
 -#file:test.txt
 TODO: txt
 `)

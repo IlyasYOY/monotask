@@ -29,28 +29,22 @@ func (e *markdownExtractor) Extract(ctx context.Context) ([]Task, error) {
 	lineNum := 0
 
 	checkboxPattern := regexp.MustCompile(`^- \[ \] (.+)`)
-
 	for scanner.Scan() {
-		select {
-		case <-ctx.Done():
-			return nil, ctx.Err()
-		default:
-		}
-
 		lineNum++
 		line := scanner.Text()
 
 		matches := checkboxPattern.FindStringSubmatch(line)
-		if matches != nil {
-			task := Task{
-				File:    e.filePath,
-				Line:    lineNum,
-				Column:  strings.Index(line, "- [ ]") + 1,
-				Type:    "CHECKBOX",
-				Message: strings.TrimSpace(matches[1]),
-			}
-			tasks = append(tasks, task)
+		if matches == nil {
+			continue
 		}
+
+		tasks = append(tasks, Task{
+			File:    e.filePath,
+			Line:    lineNum,
+			Column:  strings.Index(line, "- [ ]") + 1,
+			Type:    "CHECKBOX",
+			Message: strings.TrimSpace(matches[1]),
+		})
 	}
 
 	if err := scanner.Err(); err != nil {
