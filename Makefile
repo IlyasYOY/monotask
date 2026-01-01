@@ -5,3 +5,5 @@ test: bin/monotask
 bin/monotask:
 	go build -o $@ ./cmd/monotask
 
+clean: 
+	rm -rf ./bin
