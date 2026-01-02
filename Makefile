@@ -1,9 +1,9 @@
 .PHONY: test
-test: bulid-bin-monotask
-	MONOTASK_BINARY=./bin/monotask go test -race -v -shuffle=on -failfast -fullpath ./... 
+test: build-bin-monotask
+	MONOTASK_BINARY=$(shell pwd)/bin/monotask go test -race -v -shuffle=on -failfast -fullpath ./... 
 
-.PHONY: bulid-bin-monotask:
-bulid-bin-monotask:
+.PHONY: build-bin-monotask
+build-bin-monotask:
 	go build -o ./bin/monotask ./cmd/monotask
 
 .PHONY: clean
