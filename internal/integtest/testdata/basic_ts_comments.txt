@@ -1,0 +1,4 @@
+main.ts:1:1: TODO: Implement error handling
+
+--file:main.ts
+// TODO: Implement error handling

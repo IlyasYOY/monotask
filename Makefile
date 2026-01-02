@@ -1,9 +1,11 @@
 .PHONY: test
-test: bin/monotask
-	MONOTASK_BINARY=$(abspath $<) go test -race -v -shuffle=on -failfast -fullpath ./... 
+test: bulid-bin-monotask
+	MONOTASK_BINARY=./bin/monotask go test -race -v -shuffle=on -failfast -fullpath ./... 
 
-bin/monotask:
-	go build -o $@ ./cmd/monotask
+.PHONY: bulid-bin-monotask:
+bulid-bin-monotask:
+	go build -o ./bin/monotask ./cmd/monotask
 
+.PHONY: clean
 clean: 
 	rm -rf ./bin
