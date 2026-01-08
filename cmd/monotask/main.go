@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/ilyasyoy/monotask/pkg/extractor"
-	"github.com/ilyasyoy/monotask/pkg/output"
+	"github.com/ilyasyoy/monotask/internal/pkg/extractor"
+	"github.com/ilyasyoy/monotask/internal/pkg/output"
 )
 
 func main() {

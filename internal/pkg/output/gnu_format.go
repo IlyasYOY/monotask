@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/ilyasyoy/monotask/pkg/extractor"
+	"github.com/ilyasyoy/monotask/internal/pkg/extractor"
 )
 
 func PrintGNUFormatTo(tasks []extractor.Task, writer io.Writer) {
