@@ -9,47 +9,41 @@ import (
 	"strings"
 )
 
-type markdownExtractor struct {
-	filePath string
-}
-
 func NewMarkdownExtractor(filePath string) Extractor {
-	return &markdownExtractor{filePath: filePath}
-}
+	return ExtractorFunc(func(ctx context.Context) ([]Task, error) {
+		file, err := os.Open(filePath)
+		if err != nil {
+			return nil, fmt.Errorf("failed to open file: %w", err)
+		}
+		defer file.Close()
 
-func (e *markdownExtractor) Extract(ctx context.Context) ([]Task, error) {
-	file, err := os.Open(e.filePath)
-	if err != nil {
-		return nil, fmt.Errorf("failed to open file: %w", err)
-	}
-	defer file.Close()
+		var tasks []Task
+		scanner := bufio.NewScanner(file)
+		lineNum := 0
 
-	var tasks []Task
-	scanner := bufio.NewScanner(file)
-	lineNum := 0
+		checkboxPattern := regexp.MustCompile(`^- \[ \] (.+)`)
+		for scanner.Scan() {
+			lineNum++
+			line := scanner.Text()
 
-	checkboxPattern := regexp.MustCompile(`^- \[ \] (.+)`)
-	for scanner.Scan() {
-		lineNum++
-		line := scanner.Text()
+			matches := checkboxPattern.FindStringSubmatch(line)
+			if matches == nil {
+				continue
+			}
 
-		matches := checkboxPattern.FindStringSubmatch(line)
-		if matches == nil {
-			continue
+			tasks = append(tasks, Task{
+				File:    filePath,
+				Line:    lineNum,
+				Column:  strings.Index(line, "- [ ]") + 1,
+				Type:    "CHECKBOX",
+				Message: strings.TrimSpace(matches[1]),
+			})
 		}
 
-		tasks = append(tasks, Task{
-			File:    e.filePath,
-			Line:    lineNum,
-			Column:  strings.Index(line, "- [ ]") + 1,
-			Type:    "CHECKBOX",
-			Message: strings.TrimSpace(matches[1]),
-		})
-	}
+		if err := scanner.Err(); err != nil {
+			return nil, fmt.Errorf("error reading file: %w", err)
+		}
 
-	if err := scanner.Err(); err != nil {
-		return nil, fmt.Errorf("error reading file: %w", err)
-	}
-
-	return tasks, nil
+		return tasks, nil
+	})
 }

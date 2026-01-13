@@ -7,40 +7,34 @@ import (
 	"path/filepath"
 )
 
-type directoryExtractor struct {
-	dirPath string
-}
-
 func NewDirectoryExtractor(dirPath string) Extractor {
-	return &directoryExtractor{dirPath: dirPath}
-}
+	return ExtractorFunc(func(ctx context.Context) ([]Task, error) {
+		var allTasks []Task
 
-func (e *directoryExtractor) Extract(ctx context.Context) ([]Task, error) {
-	var allTasks []Task
+		err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
 
-	err := filepath.Walk(e.dirPath, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
+			if info.IsDir() {
+				return nil
+			}
 
-		if info.IsDir() {
+			extractor := NewFileExtractor(path)
+			tasks, err := extractor.Extract(ctx)
+			if err != nil {
+				return fmt.Errorf("failed to extract from %s: %w", path, err)
+			}
+
+			allTasks = append(allTasks, tasks...)
+
 			return nil
-		}
+		})
 
-		extractor := NewFileExtractor(path)
-		tasks, err := extractor.Extract(ctx)
 		if err != nil {
-			return fmt.Errorf("failed to extract from %s: %w", path, err)
+			return nil, fmt.Errorf("error walking directory: %w", err)
 		}
 
-		allTasks = append(allTasks, tasks...)
-
-		return nil
+		return allTasks, nil
 	})
-
-	if err != nil {
-		return nil, fmt.Errorf("error walking directory: %w", err)
-	}
-
-	return allTasks, nil
 }

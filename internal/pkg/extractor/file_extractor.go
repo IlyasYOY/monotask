@@ -6,27 +6,21 @@ import (
 	"strings"
 )
 
-type fileExtractor struct {
-	filePath string
-}
-
 func NewFileExtractor(filePath string) Extractor {
-	return &fileExtractor{filePath: filePath}
-}
+	return ExtractorFunc(func(ctx context.Context) ([]Task, error) {
+		ext := strings.ToLower(filepath.Ext(filePath))
 
-func (e *fileExtractor) Extract(ctx context.Context) ([]Task, error) {
-	ext := strings.ToLower(filepath.Ext(e.filePath))
-
-	switch ext {
-	case ".md":
-		return NewMarkdownExtractor(e.filePath).Extract(ctx)
-	case ".lua":
-		return NewLuaExtractor(e.filePath).Extract(ctx)
-	case ".sh", ".bash":
-		return NewShellExtractor(e.filePath).Extract(ctx)
-	case ".c", ".h", ".java", ".go", ".js", ".mjs", ".ts", ".mts", ".cpp", ".hpp", ".cxx", ".cc":
-		return NewCCommentsExtractor(e.filePath).Extract(ctx)
-	default:
-		return []Task{}, nil
-	}
+		switch ext {
+		case ".md":
+			return NewMarkdownExtractor(filePath).Extract(ctx)
+		case ".lua":
+			return NewLuaExtractor(filePath).Extract(ctx)
+		case ".sh", ".bash":
+			return NewShellExtractor(filePath).Extract(ctx)
+		case ".c", ".h", ".java", ".go", ".js", ".mjs", ".ts", ".mts", ".cpp", ".hpp", ".cxx", ".cc":
+			return NewCCommentsExtractor(filePath).Extract(ctx)
+		default:
+			return []Task{}, nil
+		}
+	})
 }

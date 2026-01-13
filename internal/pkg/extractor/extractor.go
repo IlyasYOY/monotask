@@ -13,3 +13,9 @@ type Task struct {
 type Extractor interface {
 	Extract(ctx context.Context) ([]Task, error)
 }
+
+type ExtractorFunc func(ctx context.Context) ([]Task, error)
+
+func (f ExtractorFunc) Extract(ctx context.Context) ([]Task, error) {
+	return f(ctx)
+}
