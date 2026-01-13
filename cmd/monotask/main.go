@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -18,7 +18,7 @@ func main() {
 
 	absPath, err := filepath.Abs(path)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error getting absolute path: %v\n", err)
+		log.Printf("Error getting absolute path: %v", err)
 		os.Exit(1)
 	}
 
@@ -27,7 +27,7 @@ func main() {
 
 	tasks, err := dirExtractor.Extract(ctx)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error extracting tasks: %v\n", err)
+		log.Printf("Error extracting tasks: %v", err)
 		os.Exit(1)
 	}
 

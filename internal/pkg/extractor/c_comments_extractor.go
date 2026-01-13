@@ -25,6 +25,7 @@ func NewCCommentsExtractor(filePath string) Extractor {
 
 		var tasks []Task
 		scanner := bufio.NewScanner(file)
+		scanner.Buffer(nil, 1024*1024) // Set max token size to 1MB for long lines
 		lineNum := 0
 
 		inBlockComment := false

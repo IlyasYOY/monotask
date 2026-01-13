@@ -109,6 +109,26 @@ func (e *extractor) Extract(ctx context.Context) ([]Task, error) {
 - Include relevant context in error messages
 - Use `defer` for resource cleanup
 
+### Logging
+```go
+import (
+	"log"
+)
+
+// Good: Use log package for error logging
+func processDirectory(dirPath string) error {
+	// ... processing ...
+	if err != nil {
+		log.Printf("Error processing directory %s: %v", dirPath, err)
+		return err
+	}
+	return nil
+}
+```
+- Use `log` package for logging errors to stderr
+- `log.Printf` automatically adds timestamps and newlines
+- Prefer `log` over `fmt.Fprintf(os.Stderr, ...)` for consistency
+
 ### Context Usage
 - Always include `context.Context` in public API methods
 - Pass context through to underlying operations

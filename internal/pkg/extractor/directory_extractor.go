@@ -3,6 +3,7 @@ package extractor
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -23,7 +24,8 @@ func NewDirectoryExtractor(dirPath string) Extractor {
 			extractor := NewFileExtractor(path)
 			tasks, err := extractor.Extract(ctx)
 			if err != nil {
-				return fmt.Errorf("failed to extract from %s: %w", path, err)
+				log.Printf("Error extracting from %s: %v", path, err)
+				return nil // Skip this file and continue processing others
 			}
 
 			allTasks = append(allTasks, tasks...)
