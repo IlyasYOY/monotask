@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	singleLinePattern  = regexp.MustCompile(`--\s*(TODO|BUG|NOTE):\s*(.+)`)
-	inBlockLinePattern = regexp.MustCompile(`\s*(TODO|BUG|NOTE):\s*(.+)`)
+	singleLinePattern  = regexp.MustCompile(`--\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`)
+	inBlockLinePattern = regexp.MustCompile(`\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`)
 )
 
 func NewLuaExtractor(filePath string) Extractor {
@@ -37,13 +37,18 @@ func NewLuaExtractor(filePath string) Extractor {
 
 					// Check content before ]] for tasks
 					beforeEnd := before
-					if matches := regexp.MustCompile(`\s*(TODO|BUG|NOTE):\s*(.+)`).FindStringSubmatch(beforeEnd); len(matches) > 0 {
+					if matches := regexp.MustCompile(`\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`).FindStringSubmatch(beforeEnd); len(matches) > 0 {
+						assignee := ""
+						if len(matches) > 2 && matches[2] != "" {
+							assignee = strings.Trim(matches[2], "()")
+						}
 						task := Task{
-							File:    filePath,
-							Line:    lineNum,
-							Column:  strings.Index(line, matches[0]) + 1,
-							Type:    matches[1],
-							Message: strings.TrimSpace(matches[2]),
+							File:     filePath,
+							Line:     lineNum,
+							Column:   strings.Index(line, matches[0]) + 1,
+							Type:     matches[1],
+							Assignee: assignee,
+							Message:  strings.TrimSpace(matches[3]),
 						}
 						tasks = append(tasks, task)
 					}
@@ -52,12 +57,17 @@ func NewLuaExtractor(filePath string) Extractor {
 					afterEnd := strings.TrimSpace(after)
 					if strings.HasPrefix(afterEnd, "--") {
 						if matches := singleLinePattern.FindStringSubmatch(afterEnd); len(matches) > 0 {
+							assignee := ""
+							if len(matches) > 2 && matches[2] != "" {
+								assignee = strings.Trim(matches[2], "()")
+							}
 							task := Task{
-								File:    filePath,
-								Line:    lineNum,
-								Column:  strings.Index(line, afterEnd) + 1,
-								Type:    matches[1],
-								Message: strings.TrimSpace(matches[2]),
+								File:     filePath,
+								Line:     lineNum,
+								Column:   strings.Index(line, afterEnd) + 1,
+								Type:     matches[1],
+								Assignee: assignee,
+								Message:  strings.TrimSpace(matches[3]),
 							}
 							tasks = append(tasks, task)
 						}
@@ -65,12 +75,17 @@ func NewLuaExtractor(filePath string) Extractor {
 				} else {
 					// Still inside block comment, check this line for tasks
 					if matches := inBlockLinePattern.FindStringSubmatch(line); len(matches) > 0 {
+						assignee := ""
+						if len(matches) > 2 && matches[2] != "" {
+							assignee = strings.Trim(matches[2], "()")
+						}
 						task := Task{
-							File:    filePath,
-							Line:    lineNum,
-							Column:  strings.Index(line, matches[0]) + 1,
-							Type:    matches[1],
-							Message: strings.TrimSpace(matches[2]),
+							File:     filePath,
+							Line:     lineNum,
+							Column:   strings.Index(line, matches[0]) + 1,
+							Type:     matches[1],
+							Assignee: assignee,
+							Message:  strings.TrimSpace(matches[3]),
 						}
 						tasks = append(tasks, task)
 					}
@@ -86,13 +101,18 @@ func NewLuaExtractor(filePath string) Extractor {
 				if before, after0, ok0 := strings.Cut(after, "]]"); ok0 {
 					// Block comment ends on same line
 					blockContent := before
-					if matches := regexp.MustCompile(`\s*(TODO|BUG|NOTE):\s*(.+)`).FindStringSubmatch(blockContent); len(matches) > 0 {
+					if matches := regexp.MustCompile(`\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`).FindStringSubmatch(blockContent); len(matches) > 0 {
+						assignee := ""
+						if len(matches) > 2 && matches[2] != "" {
+							assignee = strings.Trim(matches[2], "()")
+						}
 						task := Task{
-							File:    filePath,
-							Line:    lineNum,
-							Column:  strings.Index(line, matches[0]) + strings.Index(after, matches[0]) + 1,
-							Type:    matches[1],
-							Message: strings.TrimSpace(matches[2]),
+							File:     filePath,
+							Line:     lineNum,
+							Column:   strings.Index(line, matches[0]) + strings.Index(after, matches[0]) + 1,
+							Type:     matches[1],
+							Assignee: assignee,
+							Message:  strings.TrimSpace(matches[3]),
 						}
 						tasks = append(tasks, task)
 					}
@@ -101,12 +121,17 @@ func NewLuaExtractor(filePath string) Extractor {
 					afterEnd := strings.TrimSpace(after0)
 					if strings.HasPrefix(afterEnd, "--") {
 						if matches := singleLinePattern.FindStringSubmatch(afterEnd); len(matches) > 0 {
+							assignee := ""
+							if len(matches) > 2 && matches[2] != "" {
+								assignee = strings.Trim(matches[2], "()")
+							}
 							task := Task{
-								File:    filePath,
-								Line:    lineNum,
-								Column:  strings.Index(line, afterEnd) + 1,
-								Type:    matches[1],
-								Message: strings.TrimSpace(matches[2]),
+								File:     filePath,
+								Line:     lineNum,
+								Column:   strings.Index(line, afterEnd) + 1,
+								Type:     matches[1],
+								Assignee: assignee,
+								Message:  strings.TrimSpace(matches[3]),
 							}
 							tasks = append(tasks, task)
 						}
@@ -114,12 +139,17 @@ func NewLuaExtractor(filePath string) Extractor {
 				} else {
 					// Block comment continues to next line
 					if matches := inBlockLinePattern.FindStringSubmatch(after); len(matches) > 0 {
+						assignee := ""
+						if len(matches) > 2 && matches[2] != "" {
+							assignee = strings.Trim(matches[2], "()")
+						}
 						task := Task{
-							File:    filePath,
-							Line:    lineNum,
-							Column:  strings.Index(line, matches[0]) + 1,
-							Type:    matches[1],
-							Message: strings.TrimSpace(matches[2]),
+							File:     filePath,
+							Line:     lineNum,
+							Column:   strings.Index(line, matches[0]) + 1,
+							Type:     matches[1],
+							Assignee: assignee,
+							Message:  strings.TrimSpace(matches[3]),
 						}
 						tasks = append(tasks, task)
 					}
@@ -129,12 +159,17 @@ func NewLuaExtractor(filePath string) Extractor {
 
 			// Check for single-line comments
 			if matches := singleLinePattern.FindStringSubmatch(line); len(matches) > 0 {
+				assignee := ""
+				if len(matches) > 2 && matches[2] != "" {
+					assignee = strings.Trim(matches[2], "()")
+				}
 				task := Task{
-					File:    filePath,
-					Line:    lineNum,
-					Column:  strings.Index(line, matches[0]) + 1,
-					Type:    matches[1],
-					Message: strings.TrimSpace(matches[2]),
+					File:     filePath,
+					Line:     lineNum,
+					Column:   strings.Index(line, matches[0]) + 1,
+					Type:     matches[1],
+					Assignee: assignee,
+					Message:  strings.TrimSpace(matches[3]),
 				}
 				tasks = append(tasks, task)
 			}

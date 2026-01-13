@@ -1,0 +1,4 @@
+script.py:1:1: TODO(user): Fix the function
+
+--file:script.py
+# TODO(user): Fix the function

@@ -225,6 +225,14 @@ type Task struct {
 - **NOTE**: Important notes or reminders
 - **CHECKBOX**: Unchecked markdown checkboxes (`- [ ]`)
 
+#### Assignee Support
+Tasks can optionally include an assignee in parentheses after the type:
+- `// TODO(ilyasyoy): fix this bug`
+- `# BUG(user): handle error case`
+- `-- NOTE(team): review implementation`
+
+Empty parentheses `TODO():` are supported and treated as tasks without assignee.
+
 #### Supported File Types
 - **C/C++**: `.c`, `.h`, `.cpp`, `.hpp`, `.cxx`, `.cc` (C-style comments)
 - **Java**: `.java` (C-style comments)
@@ -240,7 +248,13 @@ Always use GNU error format for consistency:
 ```
 file:line:column: type: message
 ```
-Example: `src/main.go:15:3: TODO: implement error handling`
+Or with optional assignee:
+```
+file:line:column: type(assignee): message
+```
+Examples:
+- `src/main.go:15:3: TODO: implement error handling`
+- `src/main.go:15:3: TODO(ilyasyoy): implement error handling`
 
 #### Architecture Patterns
 - Use the Extractor interface for all extraction logic

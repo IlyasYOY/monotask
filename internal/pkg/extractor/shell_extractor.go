@@ -21,19 +21,24 @@ func NewShellExtractor(filePath string) Extractor {
 		scanner := bufio.NewScanner(file)
 		lineNum := 0
 
-		commentPattern := regexp.MustCompile(`#\s*(TODO|BUG|NOTE):\s*(.+)`)
+		commentPattern := regexp.MustCompile(`#\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`)
 
 		for scanner.Scan() {
 			lineNum++
 			line := scanner.Text()
 
 			if matches := commentPattern.FindStringSubmatch(line); len(matches) > 0 {
+				assignee := ""
+				if len(matches) > 2 && matches[2] != "" {
+					assignee = strings.Trim(matches[2], "()")
+				}
 				task := Task{
-					File:    filePath,
-					Line:    lineNum,
-					Column:  strings.Index(line, matches[0]) + 1,
-					Type:    matches[1],
-					Message: strings.TrimSpace(matches[2]),
+					File:     filePath,
+					Line:     lineNum,
+					Column:   strings.Index(line, matches[0]) + 1,
+					Type:     matches[1],
+					Assignee: assignee,
+					Message:  strings.TrimSpace(matches[3]),
 				}
 				tasks = append(tasks, task)
 			}

@@ -7,6 +7,7 @@ A CLI tool to extract tasks directly from source files and markdown documents.
 - Extracts TODO, BUG, NOTE markers from C-style comments (`//` and `/* */`)
 - Extracts TODO, BUG, NOTE markers from shell script comments (`#`)
 - Extracts unchecked checkboxes (`- [ ]`) from markdown files
+- Supports optional assignee names in parentheses (e.g., `TODO(user): message`)
 - Recursively scans directories
 - Outputs in GNU Error Format for easy integration with other tools
 
@@ -26,8 +27,14 @@ A CLI tool to extract tasks directly from source files and markdown documents.
 file:line:column: type: message
 ```
 
+Or with optional assignee:
+```
+file:line:column: type(assignee): message
+```
+
 ```
 work.c:15:3: TODO: this is todo marker in C code.
+work.c:16:3: TODO(ilyasyoy): fix this bug.
 tasks.md:14:12: CHECKBOX: this is not closed check-box.
 ```
 
@@ -50,3 +57,5 @@ Example:
 - `.sh`, `.bash` - Shell scripts (TODO, BUG, NOTE markers in comments)
 - `.py` - Python files (TODO, BUG, NOTE markers in # comments and single-line docstrings)
 - `.md` - Markdown files (unchecked checkboxes)
+
+Tasks can optionally include an assignee in parentheses after the type: `TODO(user): message`

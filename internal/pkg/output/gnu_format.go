@@ -9,6 +9,10 @@ import (
 
 func PrintGNUFormatTo(tasks []extractor.Task, writer io.Writer) {
 	for _, task := range tasks {
-		fmt.Fprintf(writer, "%s:%d:%d: %s: %s\n", task.File, task.Line, task.Column, task.Type, task.Message)
+		if task.Assignee != "" {
+			fmt.Fprintf(writer, "%s:%d:%d: %s(%s): %s\n", task.File, task.Line, task.Column, task.Type, task.Assignee, task.Message)
+		} else {
+			fmt.Fprintf(writer, "%s:%d:%d: %s: %s\n", task.File, task.Line, task.Column, task.Type, task.Message)
+		}
 	}
 }
