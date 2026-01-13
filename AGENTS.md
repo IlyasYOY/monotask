@@ -280,6 +280,15 @@ Examples:
 - `src/main.go:15:3: TODO: implement error handling`
 - `src/main.go:15:3: TODO(IlyasYOY): implement error handling`
 
+#### .mtignore Files
+- **File name**: Exactly `.mtignore` (defined as `mtIgnoreFilename` constant)
+- **Format**: One path per line, relative to the directory containing the file; empty lines ignored
+- **Matching**: Simple exact path matching (no glob patterns); paths converted to absolute for comparison
+- **Inheritance**: Parent directory ignores cascade to subdirectories; child `.mtignore` files add additional ignores (additive behavior)
+- **Special handling**: The `.mtignore` file itself is automatically skipped during extraction
+- **Integration**: Read by `readMtignores` function in `NewDirectoryExtractor`; non-existent files are ignored silently
+- **Test cases**: See `internal/integtest/testdata/mtignore/` for examples (basic, inheritance, local overrides)
+
 #### Architecture Patterns
 - Use the Extractor interface for all extraction logic
 - Separate concerns: extractors for different file types, output formatters

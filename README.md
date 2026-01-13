@@ -69,3 +69,18 @@ Example:
 - `.md` - Markdown files (unchecked checkboxes)
 
 Tasks can optionally include an assignee in parentheses after the type: `TODO(user): message`
+
+## Ignoring Files and Directories
+
+Monotask supports `.mtignore` files to exclude specific files or directories from scanning. Place a `.mtignore` file in any directory to list paths to ignore (one per line, relative to the `.mtignore` file's location).
+
+- Ignores cascade from parent directories to subdirectories
+- Child directories can add additional ignores with their own `.mtignore` files
+- Only exact path matches are supported (no patterns or wildcards)
+
+Example `.mtignore`:
+```
+build.log
+node_modules/
+temp.txt
+```
