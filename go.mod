@@ -1,4 +1,4 @@
-module github.com/ilyasyoy/monotask
+module github.com/IlyasYOY/monotask
 
 go 1.25.5
 

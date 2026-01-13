@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/ilyasyoy/monotask/internal/pkg/filestest"
+	"github.com/IlyasYOY/monotask/internal/pkg/filestest"
 )
 
 // TestIntegration test walks the `testdata` directory recursively for `*.txt` files.

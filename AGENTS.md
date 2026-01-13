@@ -68,7 +68,7 @@ import (
 	"os"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/ilyasyoy/monotask/pkg/extractor"
+	"github.com/IlyasYOY/monotask/pkg/extractor"
 )
 ```
 - Standard library imports first
@@ -248,7 +248,7 @@ type Task struct {
 
 #### Assignee Support
 Tasks can optionally include an assignee in parentheses after the type:
-- `// TODO(ilyasyoy): fix this bug`
+- `// TODO(IlyasYOY): fix this bug`
 - `// todo(user): fix this bug` (case insensitive)
 - `# BUG(user): handle error case`
 - `# bug(team): handle error case` (case insensitive)
@@ -278,7 +278,7 @@ file:line:column: type(assignee): message
 ```
 Examples:
 - `src/main.go:15:3: TODO: implement error handling`
-- `src/main.go:15:3: TODO(ilyasyoy): implement error handling`
+- `src/main.go:15:3: TODO(IlyasYOY): implement error handling`
 
 #### Architecture Patterns
 - Use the Extractor interface for all extraction logic

@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/ilyasyoy/monotask/internal/pkg/extractor"
-	"github.com/ilyasyoy/monotask/internal/pkg/output"
+	"github.com/IlyasYOY/monotask/internal/pkg/extractor"
+	"github.com/IlyasYOY/monotask/internal/pkg/output"
 )
 
 func TestPrintGNUFormatTo(t *testing.T) {
@@ -39,9 +39,9 @@ func TestPrintGNUFormatTo(t *testing.T) {
 		{
 			name: "task with assignee",
 			tasks: []extractor.Task{
-				{File: "main.go", Line: 10, Column: 5, Type: "TODO", Assignee: "ilyasyoy", Message: "fix the bug"},
+				{File: "main.go", Line: 10, Column: 5, Type: "TODO", Assignee: "IlyasYOY", Message: "fix the bug"},
 			},
-			expected: "main.go:10:5: TODO(ilyasyoy): fix the bug\n",
+			expected: "main.go:10:5: TODO(IlyasYOY): fix the bug\n",
 		},
 		{
 			name: "task without assignee",

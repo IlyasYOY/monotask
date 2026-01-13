@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/ilyasyoy/monotask/internal/pkg/filestest"
+	"github.com/IlyasYOY/monotask/internal/pkg/filestest"
 )
 
 func TestRenderDir_Header(t *testing.T) {

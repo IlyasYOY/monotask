@@ -36,7 +36,7 @@ file:line:column: type(assignee): message
 
 ```
 work.c:15:3: TODO: this is todo marker in C code.
-work.c:16:3: TODO(ilyasyoy): fix this bug.
+work.c:16:3: TODO(IlyasYOY): fix this bug.
 tasks.md:14:12: CHECKBOX: this is not closed check-box.
 ```
 
@@ -44,7 +44,7 @@ Example:
 
 ```
 ➜  dotfiles git:(master) ✗ monotask .
-/Users/ilyasyoy/Projects/IlyasYOY/dotfiles/config/nvim/after/ftplugin/go.lua:343:9: TODO: for now it works only for commands, I have to add the separate logic to support this in keymaps.
+/Users/IlyasYOY/Projects/IlyasYOY/dotfiles/config/nvim/after/ftplugin/go.lua:343:9: TODO: for now it works only for commands, I have to add the separate logic to support this in keymaps.
 ```
 
 ## Supported File Types
