@@ -13,6 +13,14 @@ A CLI tool to extract tasks directly from source files and markdown documents.
 - Recursively scans directories
 - Outputs in GNU Error Format for easy integration with other tools
 
+## Installation
+
+Install using `go install`:
+
+```bash
+go install github.com/IlyasYOY/monotask@latest
+```
+
 ## Usage
 
 ```bash
