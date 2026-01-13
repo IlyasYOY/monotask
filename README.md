@@ -26,10 +26,16 @@ A CLI tool to extract tasks directly from source files and markdown documents.
 file:line:column: type: message
 ```
 
-Example:
 ```
 work.c:15:3: TODO: this is todo marker in C code.
 tasks.md:14:12: CHECKBOX: this is not closed check-box.
+```
+
+Example:
+
+```
+➜  dotfiles git:(master) ✗ monotask .
+/Users/ilyasyoy/Projects/IlyasYOY/dotfiles/config/nvim/after/ftplugin/go.lua:343:9: TODO: for now it works only for commands, I have to add the separate logic to support this in keymaps.
 ```
 
 ## Supported File Types
