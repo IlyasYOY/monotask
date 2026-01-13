@@ -5,6 +5,7 @@ A CLI tool to extract tasks directly from source files and markdown documents.
 ## Features
 
 - Extracts TODO, BUG, NOTE markers from C-style comments (`//` and `/* */`)
+- Extracts TODO, BUG, NOTE markers from shell script comments (`#`)
 - Extracts unchecked checkboxes (`- [ ]`) from markdown files
 - Recursively scans directories
 - Outputs in GNU Error Format for easy integration with other tools
@@ -40,4 +41,5 @@ tasks.md:14:12: CHECKBOX: this is not closed check-box.
 - `.ts`, `.mts` - TypeScript files (TODO, BUG, NOTE markers in comments)
 - `.cpp`, `.hpp`, `.cxx`, `.cc` - C++ files (TODO, BUG, NOTE markers in comments)
 - `.lua` - Lua files (TODO, BUG, NOTE markers in comments)
+- `.sh`, `.bash` - Shell scripts (TODO, BUG, NOTE markers in comments)
 - `.md` - Markdown files (unchecked checkboxes)

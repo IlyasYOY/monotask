@@ -231,6 +231,7 @@ type Task struct {
 - **Go**: `.go` (C-style comments)
 - **JavaScript/TypeScript**: `.js`, `.mjs`, `.ts`, `.mts` (C-style comments)
 - **Lua**: `.lua` (single-line `--` and multi-line `--[[ ]]`)
+- **Shell**: `.sh`, `.bash` (single-line `#`)
 - **Markdown**: `.md` (unchecked checkboxes)
 
 #### Output Format

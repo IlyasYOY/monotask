@@ -1,0 +1,6 @@
+
+
+--file:script.sh
+# This is a comment without markers
+echo "hello world"
+# Another comment
