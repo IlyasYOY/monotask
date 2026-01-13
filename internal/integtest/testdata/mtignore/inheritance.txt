@@ -1,0 +1,10 @@
+subdir/other.go:1:1: TODO: appear
+
+--file:.mtignore
+subdir/file.go
+
+--file:subdir/other.go
+// TODO: appear
+
+--file:subdir/file.go
+// TODO: ignored due to inheritance

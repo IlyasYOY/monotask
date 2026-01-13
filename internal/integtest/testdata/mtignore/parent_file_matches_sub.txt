@@ -1,0 +1,12 @@
+subdir/local_ok.go:1:1: TODO: appear
+
+--file:.mtignore
+local_ok.go
+--file:subdir/.mtignore
+local_ignore.go
+
+--file:subdir/local_ignore.go
+// TODO: ignored locally
+
+--file:subdir/local_ok.go
+// TODO: appear

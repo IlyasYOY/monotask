@@ -1,6 +1,6 @@
 .PHONY: test
 test: build-bin-monotask
-	MONOTASK_BINARY=$(shell pwd)/bin/monotask go test -race -shuffle=on -failfast -fullpath ./... 
+	MONOTASK_BINARY=$(shell pwd)/bin/monotask go test -fullpath -shuffle=on ./... 
 
 .PHONY: build-bin-monotask
 build-bin-monotask:

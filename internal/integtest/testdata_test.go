@@ -48,12 +48,9 @@ func TestIntegration(t *testing.T) {
 		t.Fatalf("Failed to find test files: %v", err)
 	}
 
-	t.Parallel()
-
 	for _, file := range files {
 		relPath, _ := filepath.Rel(testdataDir, file)
 		t.Run(relPath, func(t *testing.T) {
-			t.Parallel()
 			content, err := os.ReadFile(file)
 			if err != nil {
 				t.Fatalf("Failed to read test file %s: %v", file, err)

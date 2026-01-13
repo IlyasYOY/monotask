@@ -1,0 +1,10 @@
+non_ignored.go:1:1: TODO: appear
+
+--file:.mtignore
+ignored_file.go
+
+--file:ignored_file.go
+// TODO: ignored
+
+--file:non_ignored.go
+// TODO: appear
