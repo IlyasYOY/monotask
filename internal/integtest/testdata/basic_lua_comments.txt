@@ -1,0 +1,14 @@
+script.lua:1:1: TODO: implement main function
+script.lua:4:1: BUG: fix null pointer issue
+script.lua:5:1: NOTE: consider refactoring
+script.lua:8:1: TODO: implement error handling
+
+--file:script.lua
+-- TODO: implement main function
+
+--[[
+BUG: fix null pointer issue
+NOTE: consider refactoring
+]]
+
+-- TODO: implement error handling

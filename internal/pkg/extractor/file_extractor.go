@@ -20,6 +20,8 @@ func (e *fileExtractor) Extract(ctx context.Context) ([]Task, error) {
 	switch ext {
 	case ".md":
 		return NewMarkdownExtractor(e.filePath).Extract(ctx)
+	case ".lua":
+		return NewLuaExtractor(e.filePath).Extract(ctx)
 	case ".c", ".h", ".java", ".go", ".js", ".mjs", ".ts", ".mts", ".cpp", ".hpp", ".cxx", ".cc":
 		return NewCCommentsExtractor(e.filePath).Extract(ctx)
 	default:

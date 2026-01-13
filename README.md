@@ -39,4 +39,5 @@ tasks.md:14:12: CHECKBOX: this is not closed check-box.
 - `.js`, `.mjs` - JavaScript files (TODO, BUG, NOTE markers in comments)
 - `.ts`, `.mts` - TypeScript files (TODO, BUG, NOTE markers in comments)
 - `.cpp`, `.hpp`, `.cxx`, `.cc` - C++ files (TODO, BUG, NOTE markers in comments)
+- `.lua` - Lua files (TODO, BUG, NOTE markers in comments)
 - `.md` - Markdown files (unchecked checkboxes)
