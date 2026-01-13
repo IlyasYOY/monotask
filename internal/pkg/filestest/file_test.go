@@ -79,8 +79,7 @@ nested content`)
 }
 
 func TestRenderDir_EmptyContent(t *testing.T) {
-	dir, _ := filestest.RenderDir(t, `--file:empty.txt
-`)
+	dir, _ := filestest.RenderDir(t, `--file:empty.txt`)
 
 	filePath := filepath.Join(dir, "empty.txt")
 	content, err := os.ReadFile(filePath)
@@ -106,7 +105,7 @@ line
 		t.Fatalf("Failed to read file: %v", err)
 	}
 
-	expected := "line\n"
+	expected := "\nline\n\n\n"
 	if diff := cmp.Diff(expected, string(content)); diff != "" {
 		t.Errorf("content mismatch (-want +got):\n%s", diff)
 	}

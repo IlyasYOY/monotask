@@ -56,9 +56,7 @@ func RenderDir(t *testing.T, description string) (path string, header string) {
 			if strings.HasPrefix(contentLine, separatorPrefix) {
 				break
 			}
-			if contentLine != "" {
-				content.WriteString(contentLine + "\n")
-			}
+			content.WriteString(contentLine + "\n")
 		}
 
 		path = filepath.Join(tmpDir, fileName)
