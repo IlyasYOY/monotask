@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+var (
+	commentRegex = regexp.MustCompile(`#\s*` + taskRegexCore)
+)
+
 func NewShellExtractor(filePath string) Extractor {
 	return ExtractorFunc(func(ctx context.Context) ([]Task, error) {
 		file, err := os.Open(filePath)
@@ -21,25 +25,13 @@ func NewShellExtractor(filePath string) Extractor {
 		scanner := bufio.NewScanner(file)
 		lineNum := 0
 
-		commentPattern := regexp.MustCompile(`#\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`)
-
 		for scanner.Scan() {
 			lineNum++
 			line := scanner.Text()
 
-			if matches := commentPattern.FindStringSubmatch(line); len(matches) > 0 {
-				assignee := ""
-				if len(matches) > 2 && matches[2] != "" {
-					assignee = strings.Trim(matches[2], "()")
-				}
-				task := Task{
-					File:     filePath,
-					Line:     lineNum,
-					Column:   strings.Index(line, matches[0]) + 1,
-					Type:     matches[1],
-					Assignee: assignee,
-					Message:  strings.TrimSpace(matches[3]),
-				}
+			if matches := commentRegex.FindStringSubmatch(line); len(matches) > 0 {
+				col := strings.Index(line, matches[0]) + 1
+				task := ParseTask(matches, filePath, lineNum, col)
 				tasks = append(tasks, task)
 			}
 		}

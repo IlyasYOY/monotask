@@ -9,6 +9,12 @@ import (
 	"strings"
 )
 
+var (
+	hashCommentRegex  = regexp.MustCompile(`#\s*` + taskRegexCore)
+	tripleDoubleRegex = regexp.MustCompile(`""".*?` + taskRegexCore + `"""`)
+	tripleSingleRegex = regexp.MustCompile(`'''.*?` + taskRegexCore + `'''`)
+)
+
 func NewPythonExtractor(filePath string) Extractor {
 	return ExtractorFunc(func(ctx context.Context) ([]Task, error) {
 		file, err := os.Open(filePath)
@@ -21,67 +27,28 @@ func NewPythonExtractor(filePath string) Extractor {
 		scanner := bufio.NewScanner(file)
 		lineNum := 0
 
-		// Pattern for # comments (like shell)
-		hashCommentPattern := regexp.MustCompile(`#\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`)
-
-		// Patterns for single-line docstrings
-		tripleDoublePattern := regexp.MustCompile(`""".*?(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+?)"""`)
-		tripleSinglePattern := regexp.MustCompile(`'''.*?(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+?)'''`)
-
 		for scanner.Scan() {
 			lineNum++
 			line := scanner.Text()
 
 			// Check for # comments
-			if matches := hashCommentPattern.FindStringSubmatch(line); len(matches) > 0 {
-				assignee := ""
-				if len(matches) > 2 && matches[2] != "" {
-					assignee = strings.Trim(matches[2], "()")
-				}
-				task := Task{
-					File:     filePath,
-					Line:     lineNum,
-					Column:   strings.Index(line, matches[0]) + 1,
-					Type:     matches[1],
-					Assignee: assignee,
-					Message:  strings.TrimSpace(matches[3]),
-				}
+			if matches := hashCommentRegex.FindStringSubmatch(line); len(matches) > 0 {
+				col := strings.Index(line, matches[0]) + 1
+				task := ParseTask(matches, filePath, lineNum, col)
 				tasks = append(tasks, task)
 			}
 
 			// Check for triple double quote docstrings
-			if matches := tripleDoublePattern.FindStringSubmatch(line); len(matches) > 0 {
-				assignee := ""
-				if len(matches) > 3 && matches[2] != "" {
-					assignee = strings.Trim(matches[2], "()")
-				}
+			if matches := tripleDoubleRegex.FindStringSubmatch(line); len(matches) > 0 {
 				col := strings.Index(line, matches[0]) + strings.Index(matches[0], matches[1]+":") + 1
-				task := Task{
-					File:     filePath,
-					Line:     lineNum,
-					Column:   col,
-					Type:     matches[1],
-					Assignee: assignee,
-					Message:  strings.TrimSpace(matches[3]),
-				}
+				task := ParseTask(matches, filePath, lineNum, col)
 				tasks = append(tasks, task)
 			}
 
 			// Check for triple single quote docstrings
-			if matches := tripleSinglePattern.FindStringSubmatch(line); len(matches) > 0 {
-				assignee := ""
-				if len(matches) > 3 && matches[2] != "" {
-					assignee = strings.Trim(matches[2], "()")
-				}
+			if matches := tripleSingleRegex.FindStringSubmatch(line); len(matches) > 0 {
 				col := strings.Index(line, matches[0]) + strings.Index(matches[0], matches[1]+":") + 1
-				task := Task{
-					File:     filePath,
-					Line:     lineNum,
-					Column:   col,
-					Type:     matches[1],
-					Assignee: assignee,
-					Message:  strings.TrimSpace(matches[3]),
-				}
+				task := ParseTask(matches, filePath, lineNum, col)
 				tasks = append(tasks, task)
 			}
 		}

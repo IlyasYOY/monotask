@@ -9,6 +9,12 @@ import (
 	"strings"
 )
 
+var (
+	lineCommentRegex  = regexp.MustCompile(`//\s*` + taskRegexCore)
+	blockCommentRegex = regexp.MustCompile(`/\*\s*` + taskRegexCore)
+	inBlockRegex      = regexp.MustCompile(`\s*` + taskRegexCore)
+)
+
 func NewCCommentsExtractor(filePath string) Extractor {
 	return ExtractorFunc(func(ctx context.Context) ([]Task, error) {
 		file, err := os.Open(filePath)
@@ -21,11 +27,7 @@ func NewCCommentsExtractor(filePath string) Extractor {
 		scanner := bufio.NewScanner(file)
 		lineNum := 0
 
-		lineCommentPattern := regexp.MustCompile(`//\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`)
-
 		inBlockComment := false
-		blockCommentPattern := regexp.MustCompile(`/\*\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`)
-
 		for scanner.Scan() {
 			lineNum++
 			line := scanner.Text()
@@ -35,36 +37,16 @@ func NewCCommentsExtractor(filePath string) Extractor {
 					inBlockComment = false
 					rest := strings.TrimSpace(line[idx+2:])
 					if rest != "" {
-						if matches := regexp.MustCompile(`\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`).FindStringSubmatch(rest); len(matches) > 0 {
-							assignee := ""
-							if len(matches) > 2 && matches[2] != "" {
-								assignee = strings.Trim(matches[2], "()")
-							}
-							task := Task{
-								File:     filePath,
-								Line:     lineNum,
-								Column:   idx + 3,
-								Type:     matches[1],
-								Assignee: assignee,
-								Message:  strings.TrimSpace(matches[3]),
-							}
+						if matches := inBlockRegex.FindStringSubmatch(rest); len(matches) > 0 {
+							col := idx + 3 + strings.Index(rest, matches[0])
+							task := ParseTask(matches, filePath, lineNum, col)
 							tasks = append(tasks, task)
 						}
 					}
 				} else {
-					if matches := regexp.MustCompile(`\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`).FindStringSubmatch(line); len(matches) > 0 {
-						assignee := ""
-						if len(matches) > 2 && matches[2] != "" {
-							assignee = strings.Trim(matches[2], "()")
-						}
-						task := Task{
-							File:     filePath,
-							Line:     lineNum,
-							Column:   strings.Index(line, matches[0]) + 1,
-							Type:     matches[1],
-							Assignee: assignee,
-							Message:  strings.TrimSpace(matches[3]),
-						}
+					if matches := inBlockRegex.FindStringSubmatch(line); len(matches) > 0 {
+						col := strings.Index(line, matches[0]) + 1
+						task := ParseTask(matches, filePath, lineNum, col)
 						tasks = append(tasks, task)
 					}
 				}
@@ -72,19 +54,9 @@ func NewCCommentsExtractor(filePath string) Extractor {
 			}
 
 			if strings.Contains(line, "/*") {
-				if matches := blockCommentPattern.FindStringSubmatch(line); len(matches) > 0 {
-					assignee := ""
-					if len(matches) > 2 && matches[2] != "" {
-						assignee = strings.Trim(matches[2], "()")
-					}
-					task := Task{
-						File:     filePath,
-						Line:     lineNum,
-						Column:   strings.Index(line, matches[0]) + 1,
-						Type:     matches[1],
-						Assignee: assignee,
-						Message:  strings.TrimSpace(matches[3]),
-					}
+				if matches := blockCommentRegex.FindStringSubmatch(line); len(matches) > 0 {
+					col := strings.Index(line, matches[0]) + 1
+					task := ParseTask(matches, filePath, lineNum, col)
 					tasks = append(tasks, task)
 
 					if !strings.Contains(line, "*/") {
@@ -96,19 +68,9 @@ func NewCCommentsExtractor(filePath string) Extractor {
 				continue
 			}
 
-			if matches := lineCommentPattern.FindStringSubmatch(line); len(matches) > 0 {
-				assignee := ""
-				if len(matches) > 2 && matches[2] != "" {
-					assignee = strings.Trim(matches[2], "()")
-				}
-				task := Task{
-					File:     filePath,
-					Line:     lineNum,
-					Column:   strings.Index(line, matches[0]) + 1,
-					Type:     matches[1],
-					Assignee: assignee,
-					Message:  strings.TrimSpace(matches[3]),
-				}
+			if matches := lineCommentRegex.FindStringSubmatch(line); len(matches) > 0 {
+				col := strings.Index(line, matches[0]) + 1
+				task := ParseTask(matches, filePath, lineNum, col)
 				tasks = append(tasks, task)
 			}
 		}

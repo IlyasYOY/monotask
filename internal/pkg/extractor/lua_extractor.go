@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	singleLinePattern  = regexp.MustCompile(`--\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`)
-	inBlockLinePattern = regexp.MustCompile(`\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`)
+	singleLineRegex  = regexp.MustCompile(`--\s*` + taskRegexCore)
+	inBlockLineRegex = regexp.MustCompile(`\s*` + taskRegexCore)
 )
 
 func NewLuaExtractor(filePath string) Extractor {
@@ -37,56 +37,26 @@ func NewLuaExtractor(filePath string) Extractor {
 
 					// Check content before ]] for tasks
 					beforeEnd := before
-					if matches := regexp.MustCompile(`\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`).FindStringSubmatch(beforeEnd); len(matches) > 0 {
-						assignee := ""
-						if len(matches) > 2 && matches[2] != "" {
-							assignee = strings.Trim(matches[2], "()")
-						}
-						task := Task{
-							File:     filePath,
-							Line:     lineNum,
-							Column:   strings.Index(line, matches[0]) + 1,
-							Type:     matches[1],
-							Assignee: assignee,
-							Message:  strings.TrimSpace(matches[3]),
-						}
+					if matches := inBlockLineRegex.FindStringSubmatch(beforeEnd); len(matches) > 0 {
+						col := strings.Index(line, matches[0]) + 1
+						task := ParseTask(matches, filePath, lineNum, col)
 						tasks = append(tasks, task)
 					}
 
 					// Check after ]] for single-line comments
 					afterEnd := strings.TrimSpace(after)
 					if strings.HasPrefix(afterEnd, "--") {
-						if matches := singleLinePattern.FindStringSubmatch(afterEnd); len(matches) > 0 {
-							assignee := ""
-							if len(matches) > 2 && matches[2] != "" {
-								assignee = strings.Trim(matches[2], "()")
-							}
-							task := Task{
-								File:     filePath,
-								Line:     lineNum,
-								Column:   strings.Index(line, afterEnd) + 1,
-								Type:     matches[1],
-								Assignee: assignee,
-								Message:  strings.TrimSpace(matches[3]),
-							}
+						if matches := singleLineRegex.FindStringSubmatch(afterEnd); len(matches) > 0 {
+							col := strings.Index(line, afterEnd) + 1
+							task := ParseTask(matches, filePath, lineNum, col)
 							tasks = append(tasks, task)
 						}
 					}
 				} else {
 					// Still inside block comment, check this line for tasks
-					if matches := inBlockLinePattern.FindStringSubmatch(line); len(matches) > 0 {
-						assignee := ""
-						if len(matches) > 2 && matches[2] != "" {
-							assignee = strings.Trim(matches[2], "()")
-						}
-						task := Task{
-							File:     filePath,
-							Line:     lineNum,
-							Column:   strings.Index(line, matches[0]) + 1,
-							Type:     matches[1],
-							Assignee: assignee,
-							Message:  strings.TrimSpace(matches[3]),
-						}
+					if matches := inBlockLineRegex.FindStringSubmatch(line); len(matches) > 0 {
+						col := strings.Index(line, matches[0]) + 1
+						task := ParseTask(matches, filePath, lineNum, col)
 						tasks = append(tasks, task)
 					}
 				}
@@ -101,56 +71,26 @@ func NewLuaExtractor(filePath string) Extractor {
 				if before, after0, ok0 := strings.Cut(after, "]]"); ok0 {
 					// Block comment ends on same line
 					blockContent := before
-					if matches := regexp.MustCompile(`\s*(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`).FindStringSubmatch(blockContent); len(matches) > 0 {
-						assignee := ""
-						if len(matches) > 2 && matches[2] != "" {
-							assignee = strings.Trim(matches[2], "()")
-						}
-						task := Task{
-							File:     filePath,
-							Line:     lineNum,
-							Column:   strings.Index(line, matches[0]) + strings.Index(after, matches[0]) + 1,
-							Type:     matches[1],
-							Assignee: assignee,
-							Message:  strings.TrimSpace(matches[3]),
-						}
+					if matches := inBlockLineRegex.FindStringSubmatch(blockContent); len(matches) > 0 {
+						col := strings.Index(line, matches[0]) + strings.Index(after, matches[0]) + 1
+						task := ParseTask(matches, filePath, lineNum, col)
 						tasks = append(tasks, task)
 					}
 					inBlockComment = false
 					// Check after ]] for single-line comments
 					afterEnd := strings.TrimSpace(after0)
 					if strings.HasPrefix(afterEnd, "--") {
-						if matches := singleLinePattern.FindStringSubmatch(afterEnd); len(matches) > 0 {
-							assignee := ""
-							if len(matches) > 2 && matches[2] != "" {
-								assignee = strings.Trim(matches[2], "()")
-							}
-							task := Task{
-								File:     filePath,
-								Line:     lineNum,
-								Column:   strings.Index(line, afterEnd) + 1,
-								Type:     matches[1],
-								Assignee: assignee,
-								Message:  strings.TrimSpace(matches[3]),
-							}
+						if matches := singleLineRegex.FindStringSubmatch(afterEnd); len(matches) > 0 {
+							col := strings.Index(line, afterEnd) + 1
+							task := ParseTask(matches, filePath, lineNum, col)
 							tasks = append(tasks, task)
 						}
 					}
 				} else {
 					// Block comment continues to next line
-					if matches := inBlockLinePattern.FindStringSubmatch(after); len(matches) > 0 {
-						assignee := ""
-						if len(matches) > 2 && matches[2] != "" {
-							assignee = strings.Trim(matches[2], "()")
-						}
-						task := Task{
-							File:     filePath,
-							Line:     lineNum,
-							Column:   strings.Index(line, matches[0]) + 1,
-							Type:     matches[1],
-							Assignee: assignee,
-							Message:  strings.TrimSpace(matches[3]),
-						}
+					if matches := inBlockLineRegex.FindStringSubmatch(after); len(matches) > 0 {
+						col := strings.Index(line, matches[0]) + 1
+						task := ParseTask(matches, filePath, lineNum, col)
 						tasks = append(tasks, task)
 					}
 				}
@@ -158,19 +98,9 @@ func NewLuaExtractor(filePath string) Extractor {
 			}
 
 			// Check for single-line comments
-			if matches := singleLinePattern.FindStringSubmatch(line); len(matches) > 0 {
-				assignee := ""
-				if len(matches) > 2 && matches[2] != "" {
-					assignee = strings.Trim(matches[2], "()")
-				}
-				task := Task{
-					File:     filePath,
-					Line:     lineNum,
-					Column:   strings.Index(line, matches[0]) + 1,
-					Type:     matches[1],
-					Assignee: assignee,
-					Message:  strings.TrimSpace(matches[3]),
-				}
+			if matches := singleLineRegex.FindStringSubmatch(line); len(matches) > 0 {
+				col := strings.Index(line, matches[0]) + 1
+				task := ParseTask(matches, filePath, lineNum, col)
 				tasks = append(tasks, task)
 			}
 		}
