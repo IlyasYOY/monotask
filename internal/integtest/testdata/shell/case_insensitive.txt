@@ -1,0 +1,12 @@
+script.sh:1:1: TODO: fix lowercase todo
+script.sh:2:1: TODO: fix mixed case Todo
+script.sh:3:1: BUG: handle lowercase bug
+script.sh:4:1: NOTE: remember mixed case Note
+script.sh:5:1: TODO(user): assigned lowercase todo
+
+--file:script.sh
+# todo: fix lowercase todo
+# Todo: fix mixed case Todo
+# bug: handle lowercase bug
+# Note: remember mixed case Note
+# todo(user): assigned lowercase todo

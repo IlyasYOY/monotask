@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-const taskRegexCore = `(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`
+const taskRegexCore = `(?i)(TODO|BUG|NOTE)(\([^)]*\))?:\s*(.+)`
 
 type Task struct {
 	File     string
@@ -17,7 +17,7 @@ type Task struct {
 }
 
 func ParseTask(matches []string, filePath string, lineNum int, column int) Task {
-	typ := matches[1]
+	typ := strings.ToUpper(matches[1])
 	assignee := ""
 	if len(matches) > 2 && matches[2] != "" {
 		assignee = strings.Trim(matches[2], "()")

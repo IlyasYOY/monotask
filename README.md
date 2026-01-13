@@ -4,8 +4,10 @@ A CLI tool to extract tasks directly from source files and markdown documents.
 
 ## Features
 
-- Extracts TODO, BUG, NOTE markers from C-style comments (`//` and `/* */`)
-- Extracts TODO, BUG, NOTE markers from shell script comments (`#`)
+- Extracts TODO, BUG, NOTE markers (case insensitive) from C-style comments (`//` and `/* */`)
+- Extracts TODO, BUG, NOTE markers (case insensitive) from shell script comments (`#`)
+- Extracts TODO, BUG, NOTE markers (case insensitive) from Python comments and docstrings
+- Extracts TODO, BUG, NOTE markers (case insensitive) from Lua comments
 - Extracts unchecked checkboxes (`- [ ]`) from markdown files
 - Supports optional assignee names in parentheses (e.g., `TODO(user): message`)
 - Recursively scans directories
@@ -47,15 +49,15 @@ Example:
 
 ## Supported File Types
 
-- `.c`, `.h` - C files (TODO, BUG, NOTE markers in comments)
-- `.java` - Java files (TODO, BUG, NOTE markers in comments)
-- `.go` - Go files (TODO, BUG, NOTE markers in comments)
-- `.js`, `.mjs` - JavaScript files (TODO, BUG, NOTE markers in comments)
-- `.ts`, `.mts` - TypeScript files (TODO, BUG, NOTE markers in comments)
-- `.cpp`, `.hpp`, `.cxx`, `.cc` - C++ files (TODO, BUG, NOTE markers in comments)
-- `.lua` - Lua files (TODO, BUG, NOTE markers in comments)
-- `.sh`, `.bash` - Shell scripts (TODO, BUG, NOTE markers in comments)
-- `.py` - Python files (TODO, BUG, NOTE markers in # comments and single-line docstrings)
+- `.c`, `.h` - C files (case insensitive TODO, BUG, NOTE markers in comments)
+- `.java` - Java files (case insensitive TODO, BUG, NOTE markers in comments)
+- `.go` - Go files (case insensitive TODO, BUG, NOTE markers in comments)
+- `.js`, `.mjs` - JavaScript files (case insensitive TODO, BUG, NOTE markers in comments)
+- `.ts`, `.mts` - TypeScript files (case insensitive TODO, BUG, NOTE markers in comments)
+- `.cpp`, `.hpp`, `.cxx`, `.cc` - C++ files (case insensitive TODO, BUG, NOTE markers in comments)
+- `.lua` - Lua files (case insensitive TODO, BUG, NOTE markers in comments)
+- `.sh`, `.bash` - Shell scripts (case insensitive TODO, BUG, NOTE markers in comments)
+- `.py` - Python files (case insensitive TODO, BUG, NOTE markers in # comments and single-line docstrings)
 - `.md` - Markdown files (unchecked checkboxes)
 
 Tasks can optionally include an assignee in parentheses after the type: `TODO(user): message`

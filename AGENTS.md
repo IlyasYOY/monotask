@@ -1,6 +1,6 @@
 # AGENTS.md - Monotask Development Guidelines
 
-This document provides guidelines for coding agents working on the monotask codebase. Monotask is a CLI tool written in Go that extracts tasks (TODO, BUG, NOTE markers from comments and unchecked checkboxes from markdown files) and outputs them in GNU error format.
+This document provides guidelines for coding agents working on the monotask codebase. Monotask is a CLI tool written in Go that extracts tasks (case insensitive TODO, BUG, NOTE markers from comments and unchecked checkboxes from markdown files) and outputs them in GNU error format.
 
 ## Build, Test, and Development Commands
 
@@ -167,7 +167,7 @@ type extractor struct {
 
 func NewExtractor() *extractor {
 	return &extractor{
-		todoPattern: regexp.MustCompile(`//\s*TODO:\s*(.+)`),
+		todoPattern: regexp.MustCompile(`(?i)//\s*TODO:\s*(.+)`),
 	}
 }
 ```
@@ -201,6 +201,7 @@ func TestExtractor(t *testing.T) {
 		expected []Task
 	}{
 		{"simple todo", "// TODO: fix bug", []Task{{Type: "TODO", Message: "fix bug"}}},
+		{"case insensitive todo", "// todo: fix bug", []Task{{Type: "TODO", Message: "fix bug"}}},
 	}
 
 	for _, tt := range tests {
@@ -240,27 +241,30 @@ type Task struct {
 ### Project-Specific Conventions
 
 #### Task Types
-- **TODO**: General tasks that need to be completed
-- **BUG**: Known bugs that need fixing
-- **NOTE**: Important notes or reminders
+- **TODO**: General tasks that need to be completed (case insensitive: `todo`, `Todo`, `TODO`)
+- **BUG**: Known bugs that need fixing (case insensitive: `bug`, `Bug`, `BUG`)
+- **NOTE**: Important notes or reminders (case insensitive: `note`, `Note`, `NOTE`)
 - **CHECKBOX**: Unchecked markdown checkboxes (`- [ ]`)
 
 #### Assignee Support
 Tasks can optionally include an assignee in parentheses after the type:
 - `// TODO(ilyasyoy): fix this bug`
+- `// todo(user): fix this bug` (case insensitive)
 - `# BUG(user): handle error case`
+- `# bug(team): handle error case` (case insensitive)
 - `-- NOTE(team): review implementation`
+- `-- note(developer): review implementation` (case insensitive)
 
 Empty parentheses `TODO():` are supported and treated as tasks without assignee.
 
 #### Supported File Types
-- **C/C++**: `.c`, `.h`, `.cpp`, `.hpp`, `.cxx`, `.cc` (C-style comments)
-- **Java**: `.java` (C-style comments)
-- **Go**: `.go` (C-style comments)
-- **JavaScript/TypeScript**: `.js`, `.mjs`, `.ts`, `.mts` (C-style comments)
-- **Lua**: `.lua` (single-line `--` and multi-line `--[[ ]]`)
-- **Shell**: `.sh`, `.bash` (single-line `#`)
-- **Python**: `.py` (# comments and single-line docstrings)
+- **C/C++**: `.c`, `.h`, `.cpp`, `.hpp`, `.cxx`, `.cc` (C-style comments with case insensitive TODO/BUG/NOTE markers)
+- **Java**: `.java` (C-style comments with case insensitive TODO/BUG/NOTE markers)
+- **Go**: `.go` (C-style comments with case insensitive TODO/BUG/NOTE markers)
+- **JavaScript/TypeScript**: `.js`, `.mjs`, `.ts`, `.mts` (C-style comments with case insensitive TODO/BUG/NOTE markers)
+- **Lua**: `.lua` (single-line `--` and multi-line `--[[ ]]` with case insensitive TODO/BUG/NOTE markers)
+- **Shell**: `.sh`, `.bash` (single-line `#` with case insensitive TODO/BUG/NOTE markers)
+- **Python**: `.py` (# comments and single-line docstrings with case insensitive TODO/BUG/NOTE markers)
 - **Markdown**: `.md` (unchecked checkboxes)
 
 #### Output Format

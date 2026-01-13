@@ -1,0 +1,8 @@
+main.cpp:1:1: TODO: fix lowercase todo
+main.cpp:2:1: BUG: handle mixed case Bug
+main.cpp:3:1: NOTE: remember lowercase note
+
+--file:main.cpp
+// todo: fix lowercase todo
+// Bug: handle mixed case Bug
+// note: remember lowercase note

@@ -41,14 +41,14 @@ func NewPythonExtractor(filePath string) Extractor {
 
 			// Check for triple double quote docstrings
 			if matches := tripleDoubleRegex.FindStringSubmatch(line); len(matches) > 0 {
-				col := strings.Index(line, matches[0]) + strings.Index(matches[0], matches[1]+":") + 1
+				col := strings.Index(line, matches[0]) + strings.Index(matches[0], matches[1]) + 1
 				task := ParseTask(matches, filePath, lineNum, col)
 				tasks = append(tasks, task)
 			}
 
 			// Check for triple single quote docstrings
 			if matches := tripleSingleRegex.FindStringSubmatch(line); len(matches) > 0 {
-				col := strings.Index(line, matches[0]) + strings.Index(matches[0], matches[1]+":") + 1
+				col := strings.Index(line, matches[0]) + strings.Index(matches[0], matches[1]) + 1
 				task := ParseTask(matches, filePath, lineNum, col)
 				tasks = append(tasks, task)
 			}
