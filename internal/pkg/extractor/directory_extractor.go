@@ -12,29 +12,31 @@ func NewDirectoryExtractor(dirPath string) Extractor {
 	return ExtractorFunc(func(ctx context.Context) ([]Task, error) {
 		var allTasks []Task
 
-		err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-
-			if info.IsDir() {
-				return nil
-			}
-
-			extractor := NewFileExtractor(path)
-			tasks, err := extractor.Extract(ctx)
-			if err != nil {
-				log.Printf("Error extracting from %s: %v", path, err)
-				return nil // Skip this file and continue processing others
-			}
-
-			allTasks = append(allTasks, tasks...)
-
-			return nil
-		})
-
+		entries, err := os.ReadDir(dirPath)
 		if err != nil {
-			return nil, fmt.Errorf("error walking directory: %w", err)
+			return nil, fmt.Errorf("error reading directory: %w", err)
+		}
+
+		for _, entry := range entries {
+			fullPath := filepath.Join(dirPath, entry.Name())
+
+			if entry.IsDir() {
+				subExtractor := NewDirectoryExtractor(fullPath)
+				subTasks, err := subExtractor.Extract(ctx)
+				if err != nil {
+					log.Printf("Error extracting from directory %s: %v", fullPath, err)
+					continue
+				}
+				allTasks = append(allTasks, subTasks...)
+			} else {
+				extractor := NewFileExtractor(fullPath)
+				tasks, err := extractor.Extract(ctx)
+				if err != nil {
+					log.Printf("Error extracting from %s: %v", fullPath, err)
+					continue
+				}
+				allTasks = append(allTasks, tasks...)
+			}
 		}
 
 		return allTasks, nil

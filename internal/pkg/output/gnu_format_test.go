@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
 	"github.com/IlyasYOY/monotask/internal/pkg/extractor"
 	"github.com/IlyasYOY/monotask/internal/pkg/output"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestPrintGNUFormatTo(t *testing.T) {
