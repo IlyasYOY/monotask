@@ -11,7 +11,7 @@ import (
 	"github.com/ilyasyoy/monotask/internal/pkg/filestest"
 )
 
-// TestIntegration test walks the `testdata` directory for `*.txt` files.
+// TestIntegration test walks the `testdata` directory recursively for `*.txt` files.
 // Each file describes a temporary directory layout (using the `--file:` marker)
 // and the expected monotask output in its header.
 //
@@ -34,7 +34,16 @@ func TestIntegration(t *testing.T) {
 	}
 
 	testdataDir := "testdata"
-	files, err := filepath.Glob(filepath.Join(testdataDir, "*.txt"))
+	var files []string
+	err := filepath.WalkDir(testdataDir, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if !d.IsDir() && strings.HasSuffix(path, ".txt") {
+			files = append(files, path)
+		}
+		return nil
+	})
 	if err != nil {
 		t.Fatalf("Failed to find test files: %v", err)
 	}
@@ -42,7 +51,8 @@ func TestIntegration(t *testing.T) {
 	t.Parallel()
 
 	for _, file := range files {
-		t.Run(filepath.Base(file), func(t *testing.T) {
+		relPath, _ := filepath.Rel(testdataDir, file)
+		t.Run(relPath, func(t *testing.T) {
 			t.Parallel()
 			content, err := os.ReadFile(file)
 			if err != nil {

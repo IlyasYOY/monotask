@@ -1,0 +1,11 @@
+test.c:2:1: TODO: first task
+test.c:3:1: TODO: second task
+test.c:4:1: BUG: fix issue
+
+--file:test.c
+/*
+TODO: first task
+TODO: second task
+BUG: fix issue
+*/
+int main() { return 0; }
