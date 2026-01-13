@@ -232,6 +232,7 @@ type Task struct {
 - **JavaScript/TypeScript**: `.js`, `.mjs`, `.ts`, `.mts` (C-style comments)
 - **Lua**: `.lua` (single-line `--` and multi-line `--[[ ]]`)
 - **Shell**: `.sh`, `.bash` (single-line `#`)
+- **Python**: `.py` (# comments and single-line docstrings)
 - **Markdown**: `.md` (unchecked checkboxes)
 
 #### Output Format

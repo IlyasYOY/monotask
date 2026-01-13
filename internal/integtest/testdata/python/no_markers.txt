@@ -1,0 +1,5 @@
+--file:script.py
+#!/usr/bin/env python3
+print("hello")
+"""This is a docstring"""
+# regular comment

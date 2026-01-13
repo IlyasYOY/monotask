@@ -42,4 +42,5 @@ tasks.md:14:12: CHECKBOX: this is not closed check-box.
 - `.cpp`, `.hpp`, `.cxx`, `.cc` - C++ files (TODO, BUG, NOTE markers in comments)
 - `.lua` - Lua files (TODO, BUG, NOTE markers in comments)
 - `.sh`, `.bash` - Shell scripts (TODO, BUG, NOTE markers in comments)
+- `.py` - Python files (TODO, BUG, NOTE markers in # comments and single-line docstrings)
 - `.md` - Markdown files (unchecked checkboxes)

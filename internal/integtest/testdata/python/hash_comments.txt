@@ -1,0 +1,11 @@
+script.py:2:1: TODO: implement main function
+script.py:4:1: BUG: fix issue
+script.py:6:1: NOTE: consider refactoring
+
+--file:script.py
+#!/usr/bin/env python3
+# TODO: implement main function
+print("some code")
+# BUG: fix issue
+# regular comment
+# NOTE: consider refactoring
