@@ -67,23 +67,24 @@ func TestIntegration(t *testing.T) {
 			}
 			stdout := stdoutBuilder.String()
 
-			actualSet := make(map[string]bool)
+			var actualLines []string
 			for line := range strings.SplitSeq(strings.TrimSpace(stdout), "\n") {
 				if strings.TrimSpace(line) != "" {
 					shortenPath := strings.TrimPrefix(line, tempDir)
 					shortenPath = strings.TrimPrefix(shortenPath, "/")
-					actualSet[shortenPath] = true
+					actualLines = append(actualLines, shortenPath)
 				}
 			}
 
-			expectedSet := make(map[string]bool)
+			var wantLines []string
 			for line := range strings.SplitSeq(strings.TrimSpace(header), "\n") {
 				if strings.TrimSpace(line) != "" {
-					expectedSet[line] = true
+					wantLines = append(wantLines, line)
 				}
 			}
-			if diff := cmp.Diff(expectedSet, actualSet); diff != "" {
-				t.Errorf("Error matching stdout: %s", diff)
+
+			if diff := cmp.Diff(wantLines, actualLines); diff != "" {
+				t.Errorf("Error matching stdout: %s\n\nFor schema: \n%s", diff, string(content))
 			}
 		})
 	}
