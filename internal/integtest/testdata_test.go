@@ -63,7 +63,7 @@ func TestIntegration(t *testing.T) {
 			cmd.Stderr = os.Stderr
 			cmd.Dir = tempDir
 			cmd.Args = append(cmd.Args, tempDir)
-			cmd.Env = []string{"GOCOVERDIR="+os.Getenv("GOCOVERDIR")}
+			cmd.Env = []string{"GOCOVERDIR="+os.Getenv("BINARY_GOCOVERDIR")}
 			if err := cmd.Run(); err != nil {
 				t.Fatalf("Failed to run monotask binary: %v", err)
 			}
