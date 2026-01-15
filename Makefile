@@ -17,7 +17,7 @@ test-coverage: clean
 	@mkdir -p "$(shell pwd)/binary.coverprofile"
 	@# GOCOVERDIR is for the binary built with -cover, see https://go.dev/doc/build-cover#running
 	MONOTASK_BINARY="$(shell pwd)/bin/monotask" GOCOVERDIR="$(shell pwd)/binary.coverprofile" \
-		go test ./internal/integtest -test.shuffle=on
+		go test ./internal/integtest -test.shuffle=on -test.fullpath
 
 	@mkdir -p "$(shell pwd)/merged.coverprofile"
 	@go tool covdata merge -i=unit.coverprofile,binary.coverprofile -o merged.coverprofile
