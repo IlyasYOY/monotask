@@ -1,6 +1,7 @@
-README.md:1:1: CHECKBOX: Write tests
-src/main.c:1:1: TODO: Add validation
-
+--arg:{dir}
+--stdout
+{dir}/README.md:1:1: CHECKBOX: Write tests
+{dir}/src/main.c:1:1: TODO: Add validation
 --file:README.md
 - [ ] Write tests
 

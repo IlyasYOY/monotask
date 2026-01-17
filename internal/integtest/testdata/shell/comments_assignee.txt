@@ -1,4 +1,5 @@
-script.sh:1:1: BUG(fixuser): Handle edge case
-
+--arg:{dir}
+--stdout
+{dir}/script.sh:1:1: BUG(fixuser): Handle edge case
 --file:script.sh
 # BUG(fixuser): Handle edge case

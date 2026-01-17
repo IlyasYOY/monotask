@@ -1,12 +1,13 @@
-test.c:1:1: TODO: fix lowercase todo
-test.c:2:1: TODO: fix mixed case Todo
-test.c:3:1: BUG: handle lowercase bug
-test.c:4:1: BUG: handle mixed case Bug
-test.c:5:1: NOTE: remember lowercase note
-test.c:6:1: NOTE: remember mixed case Note
-test.c:7:1: TODO(user): assigned lowercase todo
-test.c:8:1: BUG(team): assigned mixed case bug
-
+--arg:{dir}
+--stdout
+{dir}/test.c:1:1: TODO: fix lowercase todo
+{dir}/test.c:2:1: TODO: fix mixed case Todo
+{dir}/test.c:3:1: BUG: handle lowercase bug
+{dir}/test.c:4:1: BUG: handle mixed case Bug
+{dir}/test.c:5:1: NOTE: remember lowercase note
+{dir}/test.c:6:1: NOTE: remember mixed case Note
+{dir}/test.c:7:1: TODO(user): assigned lowercase todo
+{dir}/test.c:8:1: BUG(team): assigned mixed case bug
 --file:test.c
 // todo: fix lowercase todo
 // Todo: fix mixed case Todo

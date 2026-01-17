@@ -1,4 +1,5 @@
-main.cpp:1:1: TODO(IlyasYOY): Implement error handling
-
+--arg:{dir}
+--stdout
+{dir}/main.cpp:1:1: TODO(IlyasYOY): Implement error handling
 --file:main.cpp
 // TODO(IlyasYOY): Implement error handling

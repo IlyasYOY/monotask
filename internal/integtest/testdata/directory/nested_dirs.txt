@@ -1,6 +1,7 @@
-docs/guide.md:1:1: CHECKBOX: Update examples
-src/utils.c:1:1: NOTE: Optimize this function
-
+--arg:{dir}
+--stdout
+{dir}/docs/guide.md:1:1: CHECKBOX: Update examples
+{dir}/src/utils.c:1:1: NOTE: Optimize this function
 --file:docs/guide.md
 - [ ] Update examples
 

@@ -1,8 +1,9 @@
-script.lua:1:1: TODO: fix lowercase todo
-script.lua:4:1: BUG: handle mixed case Bug
-script.lua:5:1: NOTE: remember lowercase note
-script.lua:8:1: TODO(user): assigned todo in block
-
+--arg:{dir}
+--stdout
+{dir}/script.lua:1:1: TODO: fix lowercase todo
+{dir}/script.lua:4:1: BUG: handle mixed case Bug
+{dir}/script.lua:5:1: NOTE: remember lowercase note
+{dir}/script.lua:8:1: TODO(user): assigned todo in block
 --file:script.lua
 -- todo: fix lowercase todo
 

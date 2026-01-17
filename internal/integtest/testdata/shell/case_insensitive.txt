@@ -1,9 +1,10 @@
-script.sh:1:1: TODO: fix lowercase todo
-script.sh:2:1: TODO: fix mixed case Todo
-script.sh:3:1: BUG: handle lowercase bug
-script.sh:4:1: NOTE: remember mixed case Note
-script.sh:5:1: TODO(user): assigned lowercase todo
-
+--arg:{dir}
+--stdout
+{dir}/script.sh:1:1: TODO: fix lowercase todo
+{dir}/script.sh:2:1: TODO: fix mixed case Todo
+{dir}/script.sh:3:1: BUG: handle lowercase bug
+{dir}/script.sh:4:1: NOTE: remember mixed case Note
+{dir}/script.sh:5:1: TODO(user): assigned lowercase todo
 --file:script.sh
 # todo: fix lowercase todo
 # Todo: fix mixed case Todo

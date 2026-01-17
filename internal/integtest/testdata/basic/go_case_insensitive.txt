@@ -1,7 +1,8 @@
-main.go:1:1: TODO: fix lowercase todo
-main.go:2:1: BUG: handle mixed case Bug
-main.go:3:1: NOTE: remember lowercase note
-
+--arg:{dir}
+--stdout
+{dir}/main.go:1:1: TODO: fix lowercase todo
+{dir}/main.go:2:1: BUG: handle mixed case Bug
+{dir}/main.go:3:1: NOTE: remember lowercase note
 --file:main.go
 // todo: fix lowercase todo
 // Bug: handle mixed case Bug

@@ -1,4 +1,5 @@
-test.c:1:1: TODO(assignee): Block comment task */
-
+--arg:{dir}
+--stdout
+{dir}/test.c:1:1: TODO(assignee): Block comment task */
 --file:test.c
 /* TODO(assignee): Block comment task */

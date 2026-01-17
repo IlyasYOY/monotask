@@ -1,4 +1,5 @@
-main.cpp:1:1: TODO: Empty assignee
-
+--arg:{dir}
+--stdout
+{dir}/main.cpp:1:1: TODO: Empty assignee
 --file:main.cpp
 // TODO(): Empty assignee

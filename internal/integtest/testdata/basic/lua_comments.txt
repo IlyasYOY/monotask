@@ -1,8 +1,9 @@
-script.lua:1:1: TODO: implement main function
-script.lua:4:1: BUG: fix null pointer issue
-script.lua:5:1: NOTE: consider refactoring
-script.lua:8:1: TODO: implement error handling
-
+--arg:{dir}
+--stdout
+{dir}/script.lua:1:1: TODO: implement main function
+{dir}/script.lua:4:1: BUG: fix null pointer issue
+{dir}/script.lua:5:1: NOTE: consider refactoring
+{dir}/script.lua:8:1: TODO: implement error handling
 --file:script.lua
 -- TODO: implement main function
 

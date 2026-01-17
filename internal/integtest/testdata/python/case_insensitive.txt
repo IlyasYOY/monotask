@@ -1,8 +1,9 @@
-script.py:2:1: TODO: fix lowercase todo
-script.py:4:1: BUG: handle mixed case Bug
-script.py:5:1: NOTE: remember lowercase note
-script.py:6:4: TODO(user): assigned todo in docstring
-
+--arg:{dir}
+--stdout
+{dir}/script.py:2:1: TODO: fix lowercase todo
+{dir}/script.py:4:1: BUG: handle mixed case Bug
+{dir}/script.py:5:1: NOTE: remember lowercase note
+{dir}/script.py:6:4: TODO(user): assigned todo in docstring
 --file:script.py
 #!/usr/bin/env python3
 # todo: fix lowercase todo

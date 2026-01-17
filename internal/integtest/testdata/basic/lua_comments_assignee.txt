@@ -1,4 +1,5 @@
-script.lua:1:1: TODO(developer): Add validation
-
+--arg:{dir}
+--stdout
+{dir}/script.lua:1:1: TODO(developer): Add validation
 --file:script.lua
 -- TODO(developer): Add validation

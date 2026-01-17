@@ -1,5 +1,5 @@
-
-
+--arg:{dir}
+--stdout
 --file:test.c
 // this is a comment
 /* another comment */

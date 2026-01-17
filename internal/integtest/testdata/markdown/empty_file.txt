@@ -1,4 +1,4 @@
-
-
+--arg:{dir}
+--stdout
 --file:test.md
 

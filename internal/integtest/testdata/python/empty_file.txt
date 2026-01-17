@@ -1,1 +1,3 @@
+--arg:{dir}
+--stdout
 --file:script.py

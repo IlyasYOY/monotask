@@ -1,4 +1,5 @@
-test.c:1:1: TODO: c
-
+--arg:{dir}
+--stdout
+{dir}/test.c:1:1: TODO: c
 --file:test.c
 // TODO: c

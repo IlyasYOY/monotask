@@ -1,5 +1,6 @@
-test.c:1:1: TODO: fix the bug
-
+--arg:{dir}
+--stdout
+{dir}/test.c:1:1: TODO: fix the bug
 --file:test.c
 // TODO: fix the bug
 int main() { return 0; }

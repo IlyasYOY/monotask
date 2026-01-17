@@ -1,4 +1,5 @@
-test.h:1:1: BUG: h
-
+--arg:{dir}
+--stdout
+{dir}/test.h:1:1: BUG: h
 --file:test.h
 // BUG: h

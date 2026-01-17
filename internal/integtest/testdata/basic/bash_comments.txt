@@ -1,7 +1,8 @@
-script.bash:1:1: TODO: implement main function
-script.bash:2:1: BUG: fix null pointer issue
-script.bash:3:1: NOTE: consider refactoring
-
+--arg:{dir}
+--stdout
+{dir}/script.bash:1:1: TODO: implement main function
+{dir}/script.bash:2:1: BUG: fix null pointer issue
+{dir}/script.bash:3:1: NOTE: consider refactoring
 --file:script.bash
 # TODO: implement main function
 # BUG: fix null pointer issue

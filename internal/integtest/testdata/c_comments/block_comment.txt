@@ -1,5 +1,6 @@
-test.c:1:1: BUG: crash here */
-
+--arg:{dir}
+--stdout
+{dir}/test.c:1:1: BUG: crash here */
 --file:test.c
 /* BUG: crash here */
 int main() { return 0; }

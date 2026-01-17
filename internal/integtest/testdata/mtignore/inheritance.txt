@@ -1,5 +1,6 @@
-subdir/other.go:1:1: TODO: appear
-
+--arg:{dir}
+--stdout
+{dir}/subdir/other.go:1:1: TODO: appear
 --file:.mtignore
 subdir/file.go
 

@@ -1,5 +1,6 @@
-non_ignored.go:1:1: TODO: appear
-
+--arg:{dir}
+--stdout
+{dir}/non_ignored.go:1:1: TODO: appear
 --file:.mtignore
 ignored_file.go
 

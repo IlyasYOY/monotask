@@ -1,5 +1,6 @@
-test.c:2:1: NOTE: important note
-
+--arg:{dir}
+--stdout
+{dir}/test.c:2:1: NOTE: important note
 --file:test.c
 /*
 NOTE: important note

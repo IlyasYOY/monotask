@@ -1,3 +1,5 @@
+--arg:{dir}
+--stdout
 --file:script.py
 #!/usr/bin/env python3
 print("hello")

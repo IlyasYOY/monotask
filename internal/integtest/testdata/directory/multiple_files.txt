@@ -1,6 +1,7 @@
-test.c:1:1: TODO: c task
-test.md:1:1: CHECKBOX: md task
-
+--arg:{dir}
+--stdout
+{dir}/test.c:1:1: TODO: c task
+{dir}/test.md:1:1: CHECKBOX: md task
 --file:test.c
 // TODO: c task
 --file:test.md

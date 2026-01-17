@@ -1,7 +1,8 @@
-script.py:1:4: TODO: implement main function
-script.py:3:4: BUG: fix issue
-script.py:4:4: NOTE: consider refactoring
-
+--arg:{dir}
+--stdout
+{dir}/script.py:1:4: TODO: implement main function
+{dir}/script.py:3:8: BUG: fix issue
+{dir}/script.py:4:8: NOTE: consider refactoring
 --file:script.py
 """TODO: implement main function"""
 def func():

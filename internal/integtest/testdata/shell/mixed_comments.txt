@@ -1,7 +1,8 @@
-script.sh:2:1: TODO: implement main function
-script.sh:4:1: BUG: fix issue
-script.sh:6:1: NOTE: consider refactoring
-
+--arg:{dir}
+--stdout
+{dir}/script.sh:2:1: TODO: implement main function
+{dir}/script.sh:4:1: BUG: fix issue
+{dir}/script.sh:6:1: NOTE: consider refactoring
 --file:script.sh
 #!/bin/bash
 # TODO: implement main function

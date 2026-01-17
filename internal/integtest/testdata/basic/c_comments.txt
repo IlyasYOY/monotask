@@ -1,4 +1,5 @@
-main.c:1:1: TODO: Implement error handling
-
+--arg:{dir}
+--stdout
+{dir}/main.c:1:1: TODO: Implement error handling
 --file:main.c
 // TODO: Implement error handling

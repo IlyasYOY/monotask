@@ -1,7 +1,8 @@
-main.js:1:1: TODO: fix lowercase todo
-main.js:2:1: BUG: handle mixed case Bug
-main.js:3:1: NOTE: remember lowercase note
-
+--arg:{dir}
+--stdout
+{dir}/main.js:1:1: TODO: fix lowercase todo
+{dir}/main.js:2:1: BUG: handle mixed case Bug
+{dir}/main.js:3:1: NOTE: remember lowercase note
 --file:main.js
 // todo: fix lowercase todo
 // Bug: handle mixed case Bug

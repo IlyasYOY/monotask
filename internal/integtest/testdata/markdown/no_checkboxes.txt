@@ -1,5 +1,5 @@
-
-
+--arg:{dir}
+--stdout
 --file:test.md
 - item
 - [x] done
