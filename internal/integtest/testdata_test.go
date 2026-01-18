@@ -1,3 +1,14 @@
+// Package integtest provides integration tests for the monotask CLI.
+//
+// The tests use binary of the application. In case of missing binary they skip.
+//
+// Binary for tests must be provided using: MONOTASK_BINARY:
+//
+//   - specify binary manually.
+//   - use dotenv files.
+//   - use make goal
+//
+// User might set BINARY_GOCOVERDIR to pass to binary as GOCOVERDIR env variable, thus collecting coverage data.
 package integtest
 
 import (
@@ -10,6 +21,7 @@ import (
 	"github.com/IlyasYOY/monotask/internal/pkg/exectest"
 )
 
+// TestIntegration walks all testdata files and creates test-cases ([exectest]) for running binary of them.
 func TestIntegration(t *testing.T) {
 	monotaskBinary := os.Getenv("MONOTASK_BINARY")
 	if monotaskBinary == "" {

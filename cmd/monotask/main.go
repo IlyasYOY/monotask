@@ -11,6 +11,11 @@ import (
 )
 
 func main() {
+	// I don't need time here:
+	// - makes testing harder,
+	// - doesn't add benefits.
+	log.SetFlags(log.Flags() &^ (log.Ldate | log.Ltime))
+
 	path := "."
 	if len(os.Args) > 1 {
 		path = os.Args[1]

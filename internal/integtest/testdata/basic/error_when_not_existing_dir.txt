@@ -1,0 +1,6 @@
+--arg:{dir}/not-existing
+--return-code:1
+--stderr
+Error extracting tasks: error reading directory: open {dir}/not-existing: no such file or directory
+--file:some.txt
+this is simple file

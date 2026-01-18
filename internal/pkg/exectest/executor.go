@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -17,9 +18,11 @@ import (
 const (
 	// TODO: replace -- with something more unique.
 	// This is the comment start in Lua, so the tests look odd.
-	filePrefix   = "--file:"
-	stdoutPrefix = "--stdout"
-	argPrefix    = "--arg:"
+	filePrefix       = "--file:"
+	stdoutPrefix     = "--stdout"
+	stderrPrefix     = "--stderr"
+	argPrefix        = "--arg:"
+	returnCodePrefix = "--return-code:"
 )
 
 type cmdOption func(*exec.Cmd)
@@ -47,18 +50,32 @@ type cmdOption func(*exec.Cmd)
 // directory with a.txt and .b.txt files.
 func Execute(t *testing.T, binary, scheme string, opts ...cmdOption) {
 	t.Helper()
-	want, args, dir := prepareScheme(t, scheme)
+	wantStdout, wantStderr, wantReturnCode, args, dir := prepareScheme(t, scheme)
 
-	got := executeCommand(t, binary, dir, args, opts)
+	gotStdout, gotStderr, gotReturnCode := executeCommand(t, binary, dir, args, opts)
 
-	wantLines := slices.Collect(strings.Lines(want))
-	gotLines := slices.Collect(strings.Lines(got))
-	if diff := cmp.Diff(wantLines, gotLines); diff != "" {
-		t.Fatalf("Error matching stdout (-missing line, +extra line): %s\n\nFor schema: \n%s", diff, scheme)
+	assertReturnCode(t, wantReturnCode, gotReturnCode)
+	assertNoDiff(t, "stderr", wantStdout, gotStdout)
+	assertNoDiff(t, "stdout", wantStderr, gotStderr)
+}
+
+func assertReturnCode(t *testing.T, want, got int) {
+	t.Helper()
+	if got != want {
+		t.Errorf("Failed to match return code: want %d, got %d", want, got)
 	}
 }
 
-func executeCommand(t *testing.T, binary string, dir string, args []string, opts []cmdOption) string {
+func assertNoDiff(t *testing.T, name string, want string, got string) {
+	t.Helper()
+	wantLines := slices.Collect(strings.Lines(want))
+	gotLines := slices.Collect(strings.Lines(got))
+	if diff := cmp.Diff(wantLines, gotLines); diff != "" {
+		t.Errorf("Failed matching %s (-missing line, +extra line): %s", name, diff)
+	}
+}
+
+func executeCommand(t *testing.T, binary string, dir string, args []string, opts []cmdOption) (string, string, int) {
 	t.Helper()
 
 	cmd := exec.Command(binary)
@@ -71,10 +88,11 @@ func executeCommand(t *testing.T, binary string, dir string, args []string, opts
 	for _, opt := range opts {
 		opt(cmd)
 	}
-	if err := cmd.Run(); err != nil {
-		t.Fatalf("Failed to run monotask binary: %v\nError message:\n%s", err, stderrBuilder.String())
-	}
-	return stdoutBuilder.String()
+
+	// this is intentional, we will assert exit code manually
+	_ = cmd.Run()
+
+	return stdoutBuilder.String(), stderrBuilder.String(), cmd.ProcessState.ExitCode()
 }
 
 // ExecuteForFile the same as the [Execute] but uses a file (path) with a scheme.
@@ -87,18 +105,28 @@ func ExecuteForFile(t *testing.T, binary string, file string, opts ...cmdOption)
 	Execute(t, binary, string(content), opts...)
 }
 
-func prepareScheme(t *testing.T, header string) (string, []string, string) {
+func prepareScheme(t *testing.T, scheme string) (string, string, int, []string, string) {
 	t.Helper()
 
-	dir := t.TempDir()
+	t.Cleanup(func() {
+		if t.Failed() {
+			t.Logf("Test scheme: %s", scheme)
+		}
+	})
 
+	// TODO: Make test fail if the same field defined twice.
 	var stdout strings.Builder
+	var stderr strings.Builder
+	var returnCode int
 	var args []string
+
+	dir := t.TempDir()
 	files := make(map[string]string)
 
 	// TODO: Replace with enum.
 	// FSM is always good for readability.
 	var isStdout bool
+	var isStderr bool
 	var isFile bool
 
 	var currentFileName string
@@ -113,24 +141,47 @@ func prepareScheme(t *testing.T, header string) (string, []string, string) {
 		currentFile.Reset()
 	}
 
-	for line := range strings.Lines(header) {
+	for line := range strings.Lines(scheme) {
+		if strings.HasPrefix(line, stderrPrefix) {
+			saveFile("")
+			isFile = false
+			isStderr = true
+			isStdout = false
+			continue
+		}
 		if strings.HasPrefix(line, stdoutPrefix) {
 			saveFile("")
-			isStdout = true
 			isFile = false
+			isStderr = false
+			isStdout = true
 			continue
 		}
 		if fileName, ok := strings.CutPrefix(line, filePrefix); ok {
 			saveFile(strings.TrimSpace(fileName))
 			isFile = true
+			isStderr = false
 			isStdout = false
 			continue
 		}
 
+		if rtCodeText, ok := strings.CutPrefix(line, returnCodePrefix); ok {
+			rtCodeText = strings.TrimSpace(rtCodeText)
+			var err error
+			returnCode, err = strconv.Atoi(rtCodeText)
+			if err != nil {
+				t.Fatalf("Failed to convert return code %q to int: %s", rtCodeText, err)
+			}
+			continue
+		}
 		if arg, ok := strings.CutPrefix(line, argPrefix); ok {
 			arg = strings.TrimSpace(arg)
 			arg = evaluateVariables(arg, dir)
 			args = append(args, arg)
+			continue
+		}
+		if isStderr {
+			line = evaluateVariables(line, dir)
+			stderr.WriteString(line)
 			continue
 		}
 		if isStdout {
@@ -147,11 +198,16 @@ func prepareScheme(t *testing.T, header string) (string, []string, string) {
 	}
 
 	for path, content := range files {
-		os.MkdirAll(filepath.Dir(path), 0o755)
-		os.WriteFile(path, []byte(content), 0o644)
+		fileDir := filepath.Dir(path)
+		if err := os.MkdirAll(fileDir, 0o755); err != nil {
+			t.Fatalf("Failed to create directory (%q) for test file: %s", fileDir, err)
+		}
+		if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+			t.Fatalf("Failed to write file (%v): %s", path, err)
+		}
 	}
 
-	return stdout.String(), args, dir
+	return stdout.String(), stderr.String(), returnCode, args, dir
 }
 
 func evaluateVariables(data string, dir string) string {
