@@ -13,4 +13,5 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: '1.25.5'
+      - run: make vet
       - run: make test-coverage
