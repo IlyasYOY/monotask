@@ -18,7 +18,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/IlyasYOY/monotask/internal/pkg/exectest"
+	"github.com/IlyasYOY/exectest"
 )
 
 // TestIntegration walks all testdata files and creates test-cases ([exectest]) for running binary of them.
