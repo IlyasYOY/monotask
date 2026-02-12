@@ -67,6 +67,7 @@ Example:
 - `.sh`, `.bash` - Shell scripts (case insensitive TODO, BUG, NOTE markers in comments)
 - `.py` - Python files (case insensitive TODO, BUG, NOTE markers in # comments and single-line docstrings)
 - `.md` - Markdown files (unchecked checkboxes)
+- `.typ` - Typst files (case insensitive TODO, BUG, NOTE markers in comments)
 
 Tasks can optionally include an assignee in parentheses after the type: `TODO(user): message`
 
