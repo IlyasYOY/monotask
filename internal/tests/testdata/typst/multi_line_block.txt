@@ -1,0 +1,9 @@
+--arg:{dir}
+--stdout
+{dir}/test.typ:2:1: NOTE: important note
+--file:test.typ
+/*
+NOTE: important note
+*/
+
+More text #link("http://test/link")[link]

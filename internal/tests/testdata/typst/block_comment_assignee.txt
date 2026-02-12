@@ -1,0 +1,5 @@
+--arg:{dir}
+--stdout
+{dir}/test.typ:1:1: TODO(assignee): Block comment task */
+--file:test.typ
+/* TODO(assignee): Block comment task */

@@ -1,0 +1,6 @@
+--arg:{dir}
+--stdout
+{dir}/test.typ:1:1: BUG: crash here */
+--file:test.typ
+/* BUG: crash here */
+this it *formatting*

@@ -1,0 +1,5 @@
+--arg:{dir}
+--stdout
+--file:test.typ
+// this is a comment
+/* another comment */

@@ -1,0 +1,12 @@
+--arg:{dir}
+--stdout
+{dir}/test.typ:2:1: TODO: first task
+{dir}/test.typ:3:1: TODO: second task
+{dir}/test.typ:4:1: BUG: fix issue
+--file:test.typ
+/*
+TODO: first task
+TODO: second task
+BUG: fix issue
+*/
+this it *formatting*

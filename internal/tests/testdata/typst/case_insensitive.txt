@@ -1,0 +1,19 @@
+--arg:{dir}
+--stdout
+{dir}/test.typ:1:1: TODO: fix lowercase todo
+{dir}/test.typ:2:1: TODO: fix mixed case Todo
+{dir}/test.typ:3:1: BUG: handle lowercase bug
+{dir}/test.typ:4:1: BUG: handle mixed case Bug
+{dir}/test.typ:5:1: NOTE: remember lowercase note
+{dir}/test.typ:6:1: NOTE: remember mixed case Note
+{dir}/test.typ:7:1: TODO(user): assigned lowercase todo
+{dir}/test.typ:8:1: BUG(team): assigned mixed case bug
+--file:test.typ
+// todo: fix lowercase todo
+// Todo: fix mixed case Todo
+// bug: handle lowercase bug
+// Bug: handle mixed case Bug
+// note: remember lowercase note
+// Note: remember mixed case Note
+// todo(user): assigned lowercase todo
+// Bug(team): assigned mixed case bug

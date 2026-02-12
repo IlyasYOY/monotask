@@ -1,0 +1,8 @@
+--arg:{dir}
+--stdout
+{dir}/test.typ:1:1: TODO: fix the bug
+--file:test.typ
+// TODO: fix the bug
+```c
+int main() { return 0; }
+```
