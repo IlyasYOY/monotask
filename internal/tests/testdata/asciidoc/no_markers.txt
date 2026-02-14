@@ -1,0 +1,6 @@
+--arg:{dir}
+--stdout
+--file:doc.adoc
+// This is a regular comment
+// No markers here
+// Just some text

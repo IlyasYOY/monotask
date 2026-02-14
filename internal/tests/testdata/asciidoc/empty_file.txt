@@ -1,0 +1,3 @@
+--arg:{dir}
+--stdout
+--file:doc.adoc

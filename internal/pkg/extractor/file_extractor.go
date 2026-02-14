@@ -19,6 +19,8 @@ func NewFileExtractor(filePath string) Extractor {
 			return NewShellExtractor(filePath).Extract(ctx)
 		case ".py":
 			return NewPythonExtractor(filePath).Extract(ctx)
+		case ".adoc":
+			return NewAsciiDocExtractor(filePath).Extract(ctx)
 		case ".c", ".h", ".java", ".go", ".js", ".mjs", ".ts", ".mts", ".cpp", ".hpp", ".cxx", ".cc", ".typ":
 			return NewCCommentsExtractor(filePath).Extract(ctx)
 		default:

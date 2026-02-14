@@ -1,0 +1,5 @@
+--arg:{dir}
+--stdout
+{dir}/doc.adoc:1:1: TODO(user): implement feature
+--file:doc.adoc
+// TODO(user): implement feature

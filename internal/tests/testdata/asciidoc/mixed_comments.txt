@@ -1,0 +1,10 @@
+--arg:{dir}
+--stdout
+{dir}/doc.adoc:1:1: TODO: line task
+{dir}/doc.adoc:4:1: BUG: block task
+--file:doc.adoc
+// TODO: line task
+
+////
+BUG: block task
+////

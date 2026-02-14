@@ -1,0 +1,5 @@
+--arg:{dir}
+--stdout
+{dir}/doc.adoc:1:1: TODO: write intro
+--file:doc.adoc
+// TODO: write intro

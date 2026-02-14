@@ -1,0 +1,17 @@
+--arg:{dir}
+--stdout
+{dir}/doc.adoc:1:1: TODO: uppercase
+{dir}/doc.adoc:2:1: TODO: lowercase
+{dir}/doc.adoc:3:1: TODO: mixed case
+{dir}/doc.adoc:4:1: BUG: uppercase bug
+{dir}/doc.adoc:5:1: BUG: lowercase bug
+{dir}/doc.adoc:6:1: NOTE: uppercase note
+{dir}/doc.adoc:7:1: NOTE: lowercase note
+--file:doc.adoc
+// TODO: uppercase
+// todo: lowercase
+// Todo: mixed case
+// BUG: uppercase bug
+// bug: lowercase bug
+// NOTE: uppercase note
+// note: lowercase note

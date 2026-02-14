@@ -1,0 +1,5 @@
+--arg:{dir}
+--stdout
+{dir}/test.adoc:1:1: TODO: test task
+--file:test.adoc
+// TODO: test task

@@ -1,0 +1,11 @@
+--arg:{dir}
+--stdout
+{dir}/doc.adoc:2:1: TODO: first task
+{dir}/doc.adoc:3:1: BUG: second task
+{dir}/doc.adoc:4:1: NOTE: third task
+--file:doc.adoc
+////
+TODO: first task
+BUG: second task
+NOTE: third task
+////

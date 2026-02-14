@@ -1,0 +1,8 @@
+--arg:{dir}
+--stdout
+{dir}/doc.adoc:3:1: TODO(IlyasYOY): review section
+--file:doc.adoc
+Introduction
+////
+TODO(IlyasYOY): review section
+////
