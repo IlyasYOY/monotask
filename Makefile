@@ -1,3 +1,21 @@
+.DEFAULT_GOAL := help
+
+.PHONY: help
+help:
+	@printf '%s\n' \
+		'Available targets:' \
+		'  help          Show this help message' \
+		'  install       Install monotask with go install' \
+		'  bin/monotask  Build the monotask binary' \
+		'  vet           Run go vet' \
+		'  test          Run all tests' \
+		'  test-coverage Run tests with coverage' \
+		'  clean         Remove build and coverage artifacts'
+
+.PHONY: install
+install:
+	go install ./cmd/monotask
+
 bin/monotask:
 	go build -o ./bin/monotask ./cmd/monotask
 
