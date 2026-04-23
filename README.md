@@ -18,20 +18,23 @@ A CLI tool to extract tasks directly from source files and markdown documents.
 Install using `go install`:
 
 ```bash
-go install github.com/IlyasYOY/monotask@latest
+go install github.com/IlyasYOY/monotask/cmd/monotask@latest
 ```
 
 ## Usage
 
 ```bash
+# Print version
+monotask --version
+
 # Scan current directory
-./monotask
+monotask
 
 # Scan specific directory
-./monotask /path/to/directory
+monotask /path/to/directory
 
 # Scan specific file
-./monotask /path/to/file.md
+monotask /path/to/file.md
 ```
 
 ## Output Format

@@ -2,29 +2,55 @@ package main
 
 import (
 	"context"
+	"flag"
+	"fmt"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/IlyasYOY/monotask/internal/pkg/extractor"
 	"github.com/IlyasYOY/monotask/internal/pkg/output"
+	"github.com/IlyasYOY/monotask/internal/pkg/version"
 )
 
+var versionString = version.Current
+
 func main() {
+	os.Exit(run(os.Args[1:], os.Stdout))
+}
+
+func run(args []string, stdout io.Writer) int {
 	// I don't need time here:
 	// - makes testing harder,
 	// - doesn't add benefits.
 	log.SetFlags(log.Flags() &^ (log.Ldate | log.Ltime))
 
+	flags := flag.NewFlagSet("monotask", flag.ContinueOnError)
+	flags.SetOutput(io.Discard)
+
+	var showVersion bool
+	flags.BoolVar(&showVersion, "v", false, "print version")
+	flags.BoolVar(&showVersion, "version", false, "print version")
+	if err := flags.Parse(args); err != nil {
+		log.Printf("Error parsing flags: %v", err)
+		return 2
+	}
+
+	if showVersion {
+		fmt.Fprintln(stdout, versionString())
+		return 0
+	}
+
 	path := "."
-	if len(os.Args) > 1 {
-		path = os.Args[1]
+	if flags.NArg() > 0 {
+		path = flags.Arg(0)
 	}
 
 	absPath, err := filepath.Abs(path)
 	if err != nil {
 		log.Printf("Error getting absolute path: %v", err)
-		os.Exit(1)
+		return 1
 	}
 
 	ctx := context.Background()
@@ -36,8 +62,9 @@ func main() {
 	tasks, err := taskExtractor.Extract(ctx)
 	if err != nil {
 		log.Printf("Error extracting tasks: %v", err)
-		os.Exit(1)
+		return 1
 	}
 
-	output.PrintGNUFormatTo(tasks, os.Stdout)
+	output.PrintGNUFormatTo(tasks, stdout)
+	return 0
 }
