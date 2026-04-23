@@ -1,0 +1,14 @@
+--arg:{dir}
+--stdout
+{dir}/go.mod:5:1: TODO: top level module task
+{dir}/go.mod:6:32: BUG(user): inline directive issue
+{dir}/go.mod:7:1: NOTE(team): lowercase marker
+--file:go.mod
+module example.com/app
+
+go 1.25.6
+
+// TODO: top level module task
+require example.com/pkg v1.2.3 // BUG(user): inline directive issue
+// note(team): lowercase marker
+/* TODO: ignored block comment */

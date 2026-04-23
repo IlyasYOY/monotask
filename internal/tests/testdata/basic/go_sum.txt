@@ -1,0 +1,5 @@
+--arg:{dir}
+--stdout
+--file:go.sum
+example.com/pkg v1.2.3 h1:abcTODO:def
+example.com/pkg v1.2.3/go.mod h1:checksumBUG:content

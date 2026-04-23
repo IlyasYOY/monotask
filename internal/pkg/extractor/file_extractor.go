@@ -8,6 +8,13 @@ import (
 
 func NewFileExtractor(filePath string) Extractor {
 	return ExtractorFunc(func(ctx context.Context) ([]Task, error) {
+		switch filepath.Base(filePath) {
+		case "go.mod":
+			return NewGoModExtractor(filePath).Extract(ctx)
+		case "go.sum":
+			return []Task{}, nil
+		}
+
 		ext := strings.ToLower(filepath.Ext(filePath))
 
 		switch ext {

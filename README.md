@@ -63,6 +63,8 @@ Example:
 - `.c`, `.h` - C files (case insensitive TODO, BUG, NOTE markers in comments)
 - `.java` - Java files (case insensitive TODO, BUG, NOTE markers in comments)
 - `.go` - Go files (case insensitive TODO, BUG, NOTE markers in comments)
+- `go.mod` - Go module files (case insensitive TODO, BUG, NOTE markers in `//` comments)
+- `go.sum` - Go checksum files (recognized, but checksum lines are not scanned for tasks)
 - `.js`, `.mjs` - JavaScript files (case insensitive TODO, BUG, NOTE markers in comments)
 - `.ts`, `.mts` - TypeScript files (case insensitive TODO, BUG, NOTE markers in comments)
 - `.cpp`, `.hpp`, `.cxx`, `.cc` - C++ files (case insensitive TODO, BUG, NOTE markers in comments)
