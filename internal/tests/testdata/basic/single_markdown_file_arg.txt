@@ -1,0 +1,5 @@
+--arg:{dir}/test.md
+--stdout
+{dir}/test.md:1:1: CHECKBOX: Complete documentation
+--file:test.md
+- [ ] Complete documentation

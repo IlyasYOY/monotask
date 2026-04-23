@@ -28,9 +28,12 @@ func main() {
 	}
 
 	ctx := context.Background()
-	dirExtractor := extractor.NewDirectoryExtractor(absPath)
+	taskExtractor := extractor.NewDirectoryExtractor(absPath)
+	if fileInfo, err := os.Stat(absPath); err == nil && !fileInfo.IsDir() {
+		taskExtractor = extractor.NewFileExtractor(absPath)
+	}
 
-	tasks, err := dirExtractor.Extract(ctx)
+	tasks, err := taskExtractor.Extract(ctx)
 	if err != nil {
 		log.Printf("Error extracting tasks: %v", err)
 		os.Exit(1)

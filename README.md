@@ -29,6 +29,9 @@ go install github.com/IlyasYOY/monotask@latest
 
 # Scan specific directory
 ./monotask /path/to/directory
+
+# Scan specific file
+./monotask /path/to/file.md
 ```
 
 ## Output Format
